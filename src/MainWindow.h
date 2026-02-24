@@ -1,0 +1,70 @@
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
+
+#include "LlmClient.h"
+#include "SimulationRunner.h"
+#include <QComboBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMainWindow>
+#include <QPushButton>
+#include <QTabWidget>
+#include <QTextEdit>
+
+class MainWindow : public QMainWindow {
+  Q_OBJECT
+
+public:
+  MainWindow(QWidget *parent = nullptr);
+  ~MainWindow();
+
+private slots:
+  void onSelectPdfClicked();
+  void onGeneratePlanClicked();
+  void onGenerateCodeClicked();
+  void onRunSimulationClicked();
+  void onLlmResponseReceived(const QString &response, const QString &type);
+  void onLlmErrorOccurred(const QString &err);
+  void onLlmUploadProgress(qint64 bytesSent, qint64 bytesTotal);
+  void onLlmDiagnosticLog(const QString &msg);
+  void onApiTimerTick();
+  void onSimulationOutputReceived(const QString &output);
+  void onSimulationErrorReceived(const QString &error);
+
+private:
+  void setupUi();
+  void createToolbar();
+  void createCentralWidget();
+  void createStatusBar();
+  void configureSettingsWidget();
+
+  // UI Elements
+  QTextEdit *specInputTextEdit;
+  QPushButton *btnSelectPdf;
+  QLabel *pdfPathLabel;
+  QString selectedPdfPath;
+
+  QTextEdit *testPlanTextEdit;
+  QTextEdit *generatedCodeTextEdit;
+  QTextEdit *simulationLogTextEdit;
+
+  QTabWidget *mainTabWidget;
+  QPushButton *btnGeneratePlan;
+  QPushButton *btnGenerateCode;
+  QPushButton *btnRunSimulation;
+
+  // Config inputs
+  QLineEdit *llmApiKeyInput;
+  QLineEdit *sshHostInput;
+  QLineEdit *sshUserInput;
+  QLineEdit *sshPassInput;
+
+  // Core Logic
+  LlmClient *llmClient;
+  SimulationRunner *simulationRunner;
+  QTimer *apiWaitTimer;
+  int apiElapsedSeconds;
+  int lastUploadLogPercent = -1;
+};
+
+#endif // MAINWINDOW_H

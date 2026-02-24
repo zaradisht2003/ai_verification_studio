@@ -1,0 +1,8 @@
+[  0%] Built target ai_studio_v2_autogen_timestamp_deps
+[ 12%] Built target ai_studio_v2_autogen
+[ 25%] Linking CXX executable ai_studio_v2.exe
+C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: cannot open output file ai_studio_v2.exe: Permission denied
+collect2.exe: error: ld returned 1 exit status
+mingw32-make[2]: *** [CMakeFiles\ai_studio_v2.dir\build.make:180: ai_studio_v2.exe] Error 1
+mingw32-make[1]: *** [CMakeFiles\Makefile2:85: CMakeFiles/ai_studio_v2.dir/all] Error 2
+mingw32-make: *** [Makefile:90: all] Error 2
