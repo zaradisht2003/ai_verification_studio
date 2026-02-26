@@ -32,6 +32,8 @@ LlmClient::~LlmClient() {
 
 void LlmClient::setApiKey(const QString &key) { apiKey = key; }
 
+void LlmClient::setProvider(LlmClient::Provider p) { currentProvider = p; }
+
 void LlmClient::generateTestPlan(const QString &specificationText) {
   QString systemInstruction =
       "You are an expert SystemVerilog verification engineer. "
@@ -68,13 +70,25 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
     return;
   }
 
-  QUrl url("https://openrouter.ai/api/v1/chat/completions");
-  QNetworkRequest request(url);
-  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-  request.setRawHeader("Authorization",
-                       QString("Bearer %1").arg(apiKey).toUtf8());
-  request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
-  request.setRawHeader("X-Title", "AI Verification Studio");
+  QUrl url;
+  QNetworkRequest request;
+
+  if (currentProvider == LlmClient::Provider::OpenRouter) {
+    url = QUrl("https://openrouter.ai/api/v1/chat/completions");
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Authorization",
+                         QString("Bearer %1").arg(apiKey).toUtf8());
+    request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
+    request.setRawHeader("X-Title", "AI Verification Studio");
+  } else {
+    url = QUrl(QString("https://generativelanguage.googleapis.com/v1beta/"
+                       "models/gemini-2.5-flash:generateContent?key=%1")
+                   .arg(apiKey));
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  }
+
   currentRequest = request;
 
   QFutureWatcher<QByteArray> *watcher = new QFutureWatcher<QByteArray>(this);
@@ -89,15 +103,21 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
             watcher->deleteLater();
           });
 
-  QFuture<QByteArray> future =
-      QtConcurrent::run(LlmClient::buildMultimodalPayload, systemInstruction,
-                        prompt, pdfFilePath);
+  QFuture<QByteArray> future;
+  if (currentProvider == Provider::OpenRouter) {
+    future = QtConcurrent::run(LlmClient::buildOpenRouterMultimodalPayload,
+                               systemInstruction, prompt, pdfFilePath);
+  } else {
+    future = QtConcurrent::run(LlmClient::buildGeminiMultimodalPayload,
+                               systemInstruction, prompt, pdfFilePath);
+  }
   watcher->setFuture(future);
 }
 
-QByteArray LlmClient::buildMultimodalPayload(const QString &systemInstruction,
-                                             const QString &prompt,
-                                             const QString &pdfFilePath) {
+QByteArray
+LlmClient::buildOpenRouterMultimodalPayload(const QString &systemInstruction,
+                                            const QString &prompt,
+                                            const QString &pdfFilePath) {
   QFile file(pdfFilePath);
   if (!file.open(QIODevice::ReadOnly)) {
     return QByteArray();
@@ -157,6 +177,64 @@ QByteArray LlmClient::buildMultimodalPayload(const QString &systemInstruction,
   return doc.toJson(QJsonDocument::Compact);
 }
 
+QByteArray
+LlmClient::buildGeminiMultimodalPayload(const QString &systemInstruction,
+                                        const QString &prompt,
+                                        const QString &pdfFilePath) {
+  QFile file(pdfFilePath);
+  if (!file.open(QIODevice::ReadOnly)) {
+    return QByteArray();
+  }
+
+  QByteArray fileData = file.readAll();
+  QString base64Data = fileData.toBase64();
+  file.close();
+
+  QJsonObject requestBody;
+
+  // System Instruction
+  QJsonObject sysInstObj;
+  QJsonArray sysInstParts;
+  QJsonObject sysInstPart;
+  sysInstPart["text"] = systemInstruction;
+  sysInstParts.append(sysInstPart);
+  sysInstObj["parts"] = sysInstParts;
+  requestBody["systemInstruction"] = sysInstObj;
+
+  // Generation Config (JSON enforce)
+  QJsonObject genConfig;
+  genConfig["temperature"] = 0.2;
+  genConfig["responseMimeType"] = "application/json";
+  requestBody["generationConfig"] = genConfig;
+
+  // Contents
+  QJsonArray contentsArray;
+  QJsonObject contentObj;
+  contentObj["role"] = "user";
+
+  QJsonArray partsArray;
+
+  // Prompt text
+  QJsonObject textPart;
+  textPart["text"] = prompt;
+  partsArray.append(textPart);
+
+  // Inline PDF
+  QJsonObject inlineDataPart;
+  QJsonObject inlineDataObj;
+  inlineDataObj["mimeType"] = "application/pdf";
+  inlineDataObj["data"] = base64Data;
+  inlineDataPart["inlineData"] = inlineDataObj;
+  partsArray.append(inlineDataPart);
+
+  contentObj["parts"] = partsArray;
+  contentsArray.append(contentObj);
+  requestBody["contents"] = contentsArray;
+
+  QJsonDocument doc(requestBody);
+  return doc.toJson(QJsonDocument::Compact);
+}
+
 void LlmClient::generateSystemVerilog(const QString &testPlanJson) {
   QString systemInstruction =
       "You are a senior SystemVerilog verification engineer. "
@@ -180,13 +258,24 @@ void LlmClient::sendRequest(const QString &prompt,
     return;
   }
 
-  QUrl url("https://openrouter.ai/api/v1/chat/completions");
-  QNetworkRequest request(url);
-  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-  request.setRawHeader("Authorization",
-                       QString("Bearer %1").arg(apiKey).toUtf8());
-  request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
-  request.setRawHeader("X-Title", "AI Verification Studio");
+  QUrl url;
+  QNetworkRequest request;
+
+  if (currentProvider == LlmClient::Provider::OpenRouter) {
+    url = QUrl("https://openrouter.ai/api/v1/chat/completions");
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Authorization",
+                         QString("Bearer %1").arg(apiKey).toUtf8());
+    request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
+    request.setRawHeader("X-Title", "AI Verification Studio");
+  } else {
+    url = QUrl(QString("https://generativelanguage.googleapis.com/v1beta/"
+                       "models/gemini-2.5-flash:generateContent?key=%1")
+                   .arg(apiKey));
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  }
 
   currentRequest = request;
 
@@ -198,8 +287,14 @@ void LlmClient::sendRequest(const QString &prompt,
             watcher->deleteLater();
           });
 
-  QFuture<QByteArray> future =
-      QtConcurrent::run(LlmClient::buildTextPayload, systemInstruction, prompt);
+  QFuture<QByteArray> future;
+  if (currentProvider == LlmClient::Provider::OpenRouter) {
+    future = QtConcurrent::run(LlmClient::buildOpenRouterTextPayload,
+                               systemInstruction, prompt);
+  } else {
+    future = QtConcurrent::run(LlmClient::buildGeminiTextPayload,
+                               systemInstruction, prompt);
+  }
   watcher->setFuture(future);
 }
 
@@ -281,7 +376,42 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
 
       if (parseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
         QJsonObject jsonObject = jsonDoc.object();
-        if (jsonObject.contains("choices")) {
+
+        bool foundCompleteText = false;
+        QString textResponse;
+
+        if (currentProvider == LlmClient::Provider::OpenRouter) {
+          if (jsonObject.contains("choices")) {
+            QJsonArray choices = jsonObject["choices"].toArray();
+            if (!choices.isEmpty()) {
+              QJsonObject firstChoice = choices.first().toObject();
+              if (firstChoice.contains("message")) {
+                textResponse =
+                    firstChoice["message"].toObject()["content"].toString();
+                foundCompleteText = true;
+              }
+            }
+          }
+        } else if (currentProvider == LlmClient::Provider::Gemini) {
+          if (jsonObject.contains("candidates")) {
+            QJsonArray candidates = jsonObject["candidates"].toArray();
+            if (!candidates.isEmpty()) {
+              QJsonObject firstCandidate = candidates.first().toObject();
+              if (firstCandidate.contains("content")) {
+                QJsonObject content = firstCandidate["content"].toObject();
+                if (content.contains("parts")) {
+                  QJsonArray parts = content["parts"].toArray();
+                  if (!parts.isEmpty()) {
+                    textResponse = parts.first().toObject()["text"].toString();
+                    foundCompleteText = true;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        if (foundCompleteText) {
           emit diagnosticLog("Valid complete JSON captured from live stream! "
                              "Force-closing hanging socket.");
 
@@ -290,16 +420,7 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
             timeoutTimer->stop();
           isEarlyCompletion = true;
 
-          QJsonArray choices = jsonObject["choices"].toArray();
-          if (!choices.isEmpty()) {
-            QJsonObject firstChoice = choices.first().toObject();
-            if (firstChoice.contains("message")) {
-              QString textResponse =
-                  firstChoice["message"].toObject()["content"].toString();
-              emit responseReceived(textResponse.trimmed(),
-                                    currentResponseType);
-            }
-          }
+          emit responseReceived(textResponse.trimmed(), currentResponseType);
 
           // Abort the socket to unlock the engine. This fires onReplyFinished
           // with an OperationCanceledError, but our isEarlyCompletion flag will
@@ -318,8 +439,9 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
           });
 }
 
-QByteArray LlmClient::buildTextPayload(const QString &systemInstruction,
-                                       const QString &prompt) {
+QByteArray
+LlmClient::buildOpenRouterTextPayload(const QString &systemInstruction,
+                                      const QString &prompt) {
   QJsonObject requestBody;
 
   // Use a fast/default model on OpenRouter for pure text (e.g., Llama 3 or
@@ -350,10 +472,52 @@ QByteArray LlmClient::buildTextPayload(const QString &systemInstruction,
   return doc.toJson(QJsonDocument::Compact);
 }
 
+QByteArray LlmClient::buildGeminiTextPayload(const QString &systemInstruction,
+                                             const QString &prompt) {
+  QJsonObject requestBody;
+
+  // System Instruction
+  QJsonObject sysInstObj;
+  QJsonArray sysInstParts;
+  QJsonObject sysInstPart;
+  sysInstPart["text"] = systemInstruction;
+  sysInstParts.append(sysInstPart);
+  sysInstObj["parts"] = sysInstParts;
+  requestBody["systemInstruction"] = sysInstObj;
+
+  // Generation Config
+  QJsonObject genConfig;
+  genConfig["temperature"] = 0.2;
+  // If we're generating SystemVerilog code, Gemini prefers plain text, but for
+  // the plan we asked for JSON. Actually, LlmClient always enforces JSON
+  // natively on OpenRouter or relies on raw output. For safety, we allow it. If
+  // it's pure SV, returning JSON could break. We'll omit responseMimeType for
+  // text to let it return raw string for SV code, but if you requested JSON in
+  // the prompt, Gemini can handle it.
+  requestBody["generationConfig"] = genConfig;
+
+  // Contents
+  QJsonArray contentsArray;
+  QJsonObject contentObj;
+  contentObj["role"] = "user";
+
+  QJsonArray partsArray;
+  QJsonObject textPart;
+  textPart["text"] = prompt;
+  partsArray.append(textPart);
+
+  contentObj["parts"] = partsArray;
+  contentsArray.append(contentObj);
+  requestBody["contents"] = contentsArray;
+
+  QJsonDocument doc(requestBody);
+  return doc.toJson(QJsonDocument::Compact);
+}
+
 void LlmClient::onTimeout() {
   if (activeReply) {
     isTimeout = true;
-    emit diagnosticLog("Hard timeout reached (90s). Aborting request.");
+    emit diagnosticLog("Hard timeout reached (5 minutes). Aborting request.");
     activeReply->abort();
     // The abort will trigger onReplyFinished with an OperationCanceledError
   }
@@ -376,7 +540,7 @@ void LlmClient::onReplyFinished() {
 
   if (isTimeout) {
     emit errorOccurred(
-        "Request Timed Out after 5 minutes.\nOpenRouter API "
+        "Request Timed Out after 5 minutes.\nAPI "
         "did not close the connection in time or the generation was too long.");
     reply->deleteLater();
     return;
@@ -423,14 +587,17 @@ void LlmClient::onReplyFinished() {
 
     QString explicitError = reply->errorString();
 
-    // Check if OpenRouter embedded an explicit JSON error object
+    // Check if OpenRouter/Gemini embedded an explicit JSON error object
     if (jsonObject.contains("error")) {
       QJsonObject errObj = jsonObject["error"].toObject();
       QString apiMessage = errObj["message"].toString();
-      QString apiStatus = errObj["status"].toString();
-      int apiCode = errObj["code"].toInt();
+      QString apiStatus =
+          errObj.contains("status") ? errObj["status"].toString() : "Error";
+      int apiCode =
+          errObj.contains("code") ? errObj["code"].toInt() : httpStatusCode;
+
       if (!apiMessage.isEmpty()) {
-        explicitError = QString("OpenRouter API Error [%1 / %2]: %3")
+        explicitError = QString("API Error [%1 / %2]: %3")
                             .arg(apiStatus)
                             .arg(apiCode)
                             .arg(apiMessage);
@@ -439,8 +606,8 @@ void LlmClient::onReplyFinished() {
       explicitError =
           QString("HTTP %1: %2").arg(httpStatusCode).arg(reply->errorString());
       if (httpStatusCode == 429) {
-        explicitError += "\n\nOpenRouter reports 'Too Many Requests'. "
-                         "Please wait or check your credit balance.";
+        explicitError += "\n\nToo Many Requests. "
+                         "Please wait or check your credit balance/quotas.";
       }
     }
 
@@ -449,27 +616,53 @@ void LlmClient::onReplyFinished() {
     return;
   }
 
-  if (jsonObject.contains("choices") && jsonObject["choices"].isArray()) {
-    QJsonArray choices = jsonObject["choices"].toArray();
-    if (!choices.isEmpty()) {
-      QJsonObject firstChoice = choices.first().toObject();
-      if (firstChoice.contains("message")) {
-        QJsonObject message = firstChoice["message"].toObject();
-        QString textResponse = message["content"].toString();
-        emit responseReceived(textResponse.trimmed(), currentResponseType);
+  bool parsedSuccessfully = false;
+  QString textResponse;
+
+  if (currentProvider == LlmClient::Provider::OpenRouter) {
+    if (jsonObject.contains("choices") && jsonObject["choices"].isArray()) {
+      QJsonArray choices = jsonObject["choices"].toArray();
+      if (!choices.isEmpty()) {
+        QJsonObject firstChoice = choices.first().toObject();
+        if (firstChoice.contains("message")) {
+          QJsonObject message = firstChoice["message"].toObject();
+          textResponse = message["content"].toString();
+          parsedSuccessfully = true;
+        }
       }
     }
+  } else if (currentProvider == LlmClient::Provider::Gemini) {
+    if (jsonObject.contains("candidates") &&
+        jsonObject["candidates"].isArray()) {
+      QJsonArray candidates = jsonObject["candidates"].toArray();
+      if (!candidates.isEmpty()) {
+        QJsonObject firstCandidate = candidates.first().toObject();
+        if (firstCandidate.contains("content")) {
+          QJsonObject content = firstCandidate["content"].toObject();
+          if (content.contains("parts") && content["parts"].isArray()) {
+            QJsonArray parts = content["parts"].toArray();
+            if (!parts.isEmpty()) {
+              textResponse = parts.first().toObject()["text"].toString();
+              parsedSuccessfully = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  if (parsedSuccessfully) {
+    emit responseReceived(textResponse.trimmed(), currentResponseType);
   } else {
-    // Specifically catch chunked stream formats that OpenRouter failed to
-    // disable
+    // Specifically catch chunked stream formats
     if (responseData.trimmed().startsWith("data: {") ||
         responseData.trimmed().startsWith("id: gen-")) {
       emit errorOccurred(
-          "Application Error: OpenRouter returned a server-sent stream (SSE), "
+          "Application Error: Server returned a server-sent stream (SSE), "
           "which the app cannot parse. The raw response was logged to "
           "api_responses.log for review.");
     } else {
-      emit errorOccurred("Unexpected JSON structure from OpenRouter API.");
+      emit errorOccurred("Unexpected JSON structure from API.");
     }
   }
 

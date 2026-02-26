@@ -54,6 +54,7 @@ private:
   QPushButton *btnRunSimulation;
 
   // Config inputs
+  QComboBox *llmProviderCombo;
   QLineEdit *llmApiKeyInput;
   QLineEdit *sshHostInput;
   QLineEdit *sshUserInput;

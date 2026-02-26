@@ -13,10 +13,13 @@ class LlmClient : public QObject {
   Q_OBJECT
 
 public:
+  enum class Provider { OpenRouter, Gemini };
+
   explicit LlmClient(QObject *parent = nullptr);
   ~LlmClient();
 
   void setApiKey(const QString &key);
+  void setProvider(Provider p);
 
   // Sends a prompt to generate a JSON test plan
   void generateTestPlan(const QString &specificationText);
@@ -40,13 +43,23 @@ private slots:
 private:
   void sendRequest(const QString &prompt, const QString &systemInstruction,
                    const QString &responseType);
-  static QByteArray buildMultimodalPayload(const QString &systemInstruction,
-                                           const QString &prompt,
-                                           const QString &pdfFilePath);
-  static QByteArray buildTextPayload(const QString &systemInstruction,
-                                     const QString &prompt);
+
+  static QByteArray
+  buildOpenRouterMultimodalPayload(const QString &systemInstruction,
+                                   const QString &prompt,
+                                   const QString &pdfFilePath);
+  static QByteArray buildOpenRouterTextPayload(const QString &systemInstruction,
+                                               const QString &prompt);
+
+  static QByteArray
+  buildGeminiMultimodalPayload(const QString &systemInstruction,
+                               const QString &prompt,
+                               const QString &pdfFilePath);
+  static QByteArray buildGeminiTextPayload(const QString &systemInstruction,
+                                           const QString &prompt);
 
   QString apiKey;
+  Provider currentProvider = Provider::OpenRouter;
   QNetworkAccessManager *manager;
   QString currentResponseType;
   QNetworkRequest currentRequest;

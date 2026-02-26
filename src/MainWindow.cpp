@@ -106,14 +106,23 @@ void MainWindow::createCentralWidget() {
   QGroupBox *configGroup = new QGroupBox("Configuration", this);
   QFormLayout *configLayout = new QFormLayout(configGroup);
 
+  llmProviderCombo = new QComboBox(this);
+  llmProviderCombo->addItem(
+      "OpenRouter",
+      QVariant::fromValue(static_cast<int>(LlmClient::Provider::OpenRouter)));
+  llmProviderCombo->addItem(
+      "Google Gemini",
+      QVariant::fromValue(static_cast<int>(LlmClient::Provider::Gemini)));
+
   llmApiKeyInput = new QLineEdit(this);
   llmApiKeyInput->setEchoMode(QLineEdit::Password);
-  llmApiKeyInput->setPlaceholderText("Enter OpenRouter API Key here");
+  llmApiKeyInput->setPlaceholderText("Enter API Key here");
 
   sshHostInput = new QLineEdit(this);
   sshHostInput->setPlaceholderText("e.g. user@linux-server.local");
 
-  configLayout->addRow("OpenRouter API Key:", llmApiKeyInput);
+  configLayout->addRow("LLM Provider:", llmProviderCombo);
+  configLayout->addRow("API Key:", llmApiKeyInput);
   configLayout->addRow("SSH Target:", sshHostInput);
 
   rightLayout->addWidget(configGroup);
@@ -189,6 +198,9 @@ void MainWindow::onGeneratePlanClicked() {
   btnGeneratePlan->setEnabled(false);
   btnGenerateCode->setEnabled(false);
 
+  LlmClient::Provider selectedProvider =
+      static_cast<LlmClient::Provider>(llmProviderCombo->currentData().toInt());
+  llmClient->setProvider(selectedProvider);
   llmClient->setApiKey(apiKey);
 
   if (!selectedPdfPath.isEmpty()) {
@@ -225,6 +237,9 @@ void MainWindow::onGenerateCodeClicked() {
   btnGeneratePlan->setEnabled(false);
   btnGenerateCode->setEnabled(false);
 
+  LlmClient::Provider selectedProvider =
+      static_cast<LlmClient::Provider>(llmProviderCombo->currentData().toInt());
+  llmClient->setProvider(selectedProvider);
   llmClient->setApiKey(apiKey);
   llmClient->generateSystemVerilog(plan);
 

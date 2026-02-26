@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 
 # Define the project name and C++ version
-project(ai_studio_v2 VERSION 1.0.0 LANGUAGES CXX)
+project(ai_verification_studio VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

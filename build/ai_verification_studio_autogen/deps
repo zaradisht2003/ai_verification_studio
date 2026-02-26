@@ -1,4 +1,4 @@
-ai_studio_v2_autogen/timestamp: \
+ai_verification_studio_autogen/timestamp: \
 	C:/Qt/6.10.2/mingw_64/include/QtConcurrent/QtConcurrent \
 	C:/Qt/6.10.2/mingw_64/include/QtConcurrent/QtConcurrentDepends \
 	C:/Qt/6.10.2/mingw_64/include/QtConcurrent/qtaskbuilder.h \
@@ -1030,7 +1030,7 @@ ai_studio_v2_autogen/timestamp: \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeRCCompiler.cmake \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeSystem.cmake \
-	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_studio_v2_autogen/moc_predefs.h \
+	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/moc_predefs.h \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.cpp \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.cpp \

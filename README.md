@@ -12,30 +12,25 @@ To build and run this project, you will need the following dependencies installe
 
 ## Building the Project
 
-The project uses CMake for building. Follow these steps to compile the application from the terminal:
+The project uses CMake for building. Based on the environment, MinGW and Ninja were used for a successful build. Follow these steps to compile the application from the terminal (e.g., PowerShell):
 
-1. **Open a terminal** and navigate to the project directory:
-   ```bash
-   cd path/to/ai_verification_studio
+1. **Set up your environment variables**:
+   Ensure that the Qt MinGW binary path, CMake, and Ninja are in your system's `PATH`. For example:
+   ```powershell
+   $env:PATH="C:\Qt\6.10.2\mingw_64\bin;C:\Qt\Tools\mingw1310_64\bin;C:\Qt\Tools\Ninja;C:\Qt\Tools\CMake_64\bin;$env:PATH"
    ```
 
-2. **Create a build directory**:
-   ```bash
-   mkdir build
-   cd build
+2. **Configure the project with CMake**:
+   Use the Ninja generator and point `CMAKE_PREFIX_PATH` to your Qt installation:
+   ```powershell
+   cmake -G Ninja -S . -B build "-DCMAKE_PREFIX_PATH=C:\Qt\6.10.2\mingw_64"
    ```
 
-3. **Configure the project with CMake**:
-   ```bash
-   cmake ..
+3. **Build the executable**:
+   ```powershell
+   cmake --build build
    ```
-   *Note: You may need to provide the path to your Qt installation if CMake cannot find it automatically. You can do this by adding `-DCMAKE_PREFIX_PATH="C:\path\to\Qt\6.x.x\msvc2019_64"` (replace with your actual Qt path) to the cmake command.*
-
-4. **Build the executable**:
-   ```bash
-   cmake --build .
-   ```
-   *Note: On Windows, building the executable will automatically trigger `windeployqt` as a post-build step to copy the required Qt DLLs directly next to the compiled executable.*
+   *Note: On Windows, building the executable will automatically trigger `windeployqt` as a post-build step to copy the required Qt DLLs directly next to the compiled executable in the `build` directory.*
 
 ## Running the Application
 
@@ -44,10 +39,10 @@ Once built successfully, the compiled executable will be located inside the `bui
 You can run the application directly from the command line:
 ```bash
 # Depending on your compiler/generator, the executable might be directly in build/
-.\ai_studio_v2.exe
+.\ai_verification_studio.exe
 
 # Or inside a Debug/Release folder for multi-config generators (like MSVC)
-.\Debug\ai_studio_v2.exe
+.\Debug\ai_verification_studio.exe
 ```
 
 Alternatively, you can run the executable from your IDE (such as VS Code or Visual Studio) by using the built-in Run or Debug buttons.
