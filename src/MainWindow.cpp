@@ -1,10 +1,13 @@
 #include "MainWindow.h"
+#include <QCheckBox>
 #include <QFileDialog>
 #include <QFormLayout>
 #include <QGroupBox>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QMessageBox>
+#include <QRegularExpression>
+#include <QSpinBox>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTimer>
@@ -35,11 +38,10 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::onSimulationOutputReceived);
   connect(simulationRunner, &SimulationRunner::errorReceived, this,
           &MainWindow::onSimulationErrorReceived);
-  connect(simulationRunner, &SimulationRunner::processFinished, this,
-          [this](int exitCode) {
-            statusBar()->showMessage(
-                tr("Simulation finished with code: %1").arg(exitCode), 5000);
-          });
+  connect(simulationRunner, &SimulationRunner::scpFinished, this,
+          &MainWindow::onScpFinished);
+  connect(simulationRunner, &SimulationRunner::sshFinished, this,
+          &MainWindow::onSshFinished);
 }
 
 MainWindow::~MainWindow() {}
@@ -113,6 +115,8 @@ void MainWindow::createCentralWidget() {
   llmProviderCombo->addItem(
       "Google Gemini",
       QVariant::fromValue(static_cast<int>(LlmClient::Provider::Gemini)));
+  llmProviderCombo->addItem("Codestral", QVariant::fromValue(static_cast<int>(
+                                             LlmClient::Provider::Codestral)));
 
   llmApiKeyInput = new QLineEdit(this);
   llmApiKeyInput->setEchoMode(QLineEdit::Password);
@@ -121,9 +125,28 @@ void MainWindow::createCentralWidget() {
   sshHostInput = new QLineEdit(this);
   sshHostInput->setPlaceholderText("e.g. user@linux-server.local");
 
+  sshKeyInput = new QLineEdit(this);
+  sshKeyInput->setPlaceholderText("e.g. ~/.ssh/id_rsa");
+
+  remoteDirInput = new QLineEdit(this);
+  remoteDirInput->setPlaceholderText("e.g. ~/projects/my_ip");
+
+  coverageGoalInput = new QSpinBox(this);
+  coverageGoalInput->setRange(1, 100);
+  coverageGoalInput->setValue(100);
+  coverageGoalInput->setSuffix("%");
+
+  autoImproveCheckbox =
+      new QCheckBox("Auto-Improve Testbench to reach Goal", this);
+  autoImproveCheckbox->setChecked(true);
+
   configLayout->addRow("LLM Provider:", llmProviderCombo);
   configLayout->addRow("API Key:", llmApiKeyInput);
   configLayout->addRow("SSH Target:", sshHostInput);
+  configLayout->addRow("SSH Key Path:", sshKeyInput);
+  configLayout->addRow("Remote RTL Dir:", remoteDirInput);
+  configLayout->addRow("Target Coverage:", coverageGoalInput);
+  configLayout->addRow("", autoImproveCheckbox);
 
   rightLayout->addWidget(configGroup);
 
@@ -255,20 +278,144 @@ void MainWindow::onRunSimulationClicked() {
   }
 
   QString sshTarget = sshHostInput->text();
-  if (sshTarget.isEmpty()) {
+  QString sshKey = sshKeyInput->text();
+  QString remoteDir = remoteDirInput->text();
+
+  if (sshTarget.isEmpty() || remoteDir.isEmpty()) {
     QMessageBox::warning(this, "Missing SSH config",
-                         "Please configure SSH target.");
+                         "Please configure SSH target and Remote RTL Dir.");
     return;
   }
 
-  statusBar()->showMessage("Running Simulation via SSH...");
+  // Save the code to a temporary local file
+  QString tempDir = QDir::tempPath();
+  QString tempFilePath = QDir(tempDir).filePath("tb.sv");
+  QFile file(tempFilePath);
+  if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+    QTextStream out(&file);
+    out << code;
+    file.close();
+  } else {
+    QMessageBox::critical(this, "Error", "Could not create temporary tb.sv");
+    return;
+  }
+
+  statusBar()->showMessage("Uploading Testbench via SCP...");
   mainTabWidget->setCurrentWidget(simulationLogTextEdit);
   simulationLogTextEdit->clear();
+  simulationLogTextEdit->append("--- Starting Verification Loop ---");
+  simulationLogTextEdit->append("Copying tb.sv to remote server...");
 
+  currentSimState = SimState::RunningSimulation;
+  lastGeneratedCode = code;
+
+  simulationRunner->scpFile(sshTarget, sshKey, tempFilePath,
+                            remoteDir + "/tb.sv");
+}
+
+void MainWindow::onScpFinished(int exitCode) {
+  if (currentSimState != SimState::RunningSimulation)
+    return;
+
+  if (exitCode != 0) {
+    simulationLogTextEdit->append(
+        "<span style='color:red'>SCP Transfer Failed. Check SSH settings and "
+        "ensure the remote directory exists within your user space.</span>");
+    currentSimState = SimState::Idle;
+    return;
+  }
+
+  simulationLogTextEdit->append(
+      "Upload successful. Running VCS/Verdi on server...");
+  statusBar()->showMessage("Running Simulation via SSH...");
+
+  QString sshTarget = sshHostInput->text();
+  QString sshKey = sshKeyInput->text();
+  QString remoteDir = remoteDirInput->text();
+
+  // Command runs inside the user's remote directory. Does not require admin.
   QString command =
-      QString("echo '%1' > tb.sv && vcs -sverilog tb.sv && ./simv")
-          .arg(code.replace("'", "'\\''"));
-  simulationRunner->runSshCommand(sshTarget, command);
+      QString("cd %1 && vcs -full64 -sverilog -debug_access+all tb.sv *.sv -cm "
+              "line+cond+tgl && ./simv -cm line+cond+tgl && urg -dir simv.vdb "
+              "-report coverage_report && cat coverage_report/dashboard.txt")
+          .arg(remoteDir);
+  simulationRunner->runSshCommand(sshTarget, sshKey, command);
+}
+
+void MainWindow::onSshFinished(int exitCode) {
+  if (currentSimState != SimState::RunningSimulation)
+    return;
+  simulationLogTextEdit->append(
+      QString("Simulation command finished with exit code %1.").arg(exitCode));
+  handleSimulationLoop();
+}
+
+void MainWindow::handleSimulationLoop() {
+  QString logText = simulationLogTextEdit->toPlainText();
+
+  // Parse coverage from logText
+  // The urg dashboard.txt usually has a summary table. A simple regex could
+  // look for "TOTAL" or similar. For this example, let's look for "SCORE" or a
+  // percentage. We'll use a basic regex matching "TOTAL coverage" or just look
+  // for the last percentage if we can't find it precisely. A more robust regex
+  // for Urg dashboard is: \w+\s+(\d+\.\d+)
+
+  int currentCoverage = 0; // default
+  QRegularExpression rx("TOTAL\\s+SCORE[\\s:]+([0-9]+)");
+  QRegularExpressionMatch match = rx.match(logText);
+  if (match.hasMatch()) {
+    currentCoverage = match.captured(1).toInt();
+  } else {
+    // Fallback: Just look for the word "Score" and a number
+    QRegularExpression rx2("Score[\\s:]+([0-9]+)");
+    QRegularExpressionMatch match2 = rx2.match(logText);
+    if (match2.hasMatch()) {
+      currentCoverage = match2.captured(1).toInt();
+    }
+  }
+
+  simulationLogTextEdit->append(
+      QString("<b>Parsed Current Coverage: %1%</b>").arg(currentCoverage));
+
+  int targetCoverage = coverageGoalInput->value();
+
+  if (currentCoverage >= targetCoverage) {
+    simulationLogTextEdit->append("<span style='color:green'>Coverage Goal "
+                                  "Met! Verification Complete.</span>");
+    currentSimState = SimState::Idle;
+  } else {
+    if (autoImproveCheckbox->isChecked()) {
+      simulationLogTextEdit->append(
+          QString("<span style='color:orange'>Coverage %1% is below goal %2%. "
+                  "Requesting LLM improvement...</span>")
+              .arg(currentCoverage)
+              .arg(targetCoverage));
+      currentSimState = SimState::WaitingForLlm;
+
+      QString apiKey = llmApiKeyInput->text();
+      if (apiKey.isEmpty()) {
+        simulationLogTextEdit->append("<span style='color:red'>Cannot improve: "
+                                      "API Key is missing.</span>");
+        currentSimState = SimState::Idle;
+        return;
+      }
+
+      LlmClient::Provider selectedProvider = static_cast<LlmClient::Provider>(
+          llmProviderCombo->currentData().toInt());
+      llmClient->setProvider(selectedProvider);
+      llmClient->setApiKey(apiKey);
+
+      // Call the new method to improve the testbench
+      llmClient->improveSystemVerilog(lastGeneratedCode, logText.right(4000),
+                                      currentCoverage, targetCoverage);
+
+      mainTabWidget->setCurrentWidget(generatedCodeTextEdit);
+      generatedCodeTextEdit->setPlainText("Thinking about improvements...");
+    } else {
+      simulationLogTextEdit->append("Auto-Improve is disabled. Stopping loop.");
+      currentSimState = SimState::Idle;
+    }
+  }
 }
 
 void MainWindow::onLlmResponseReceived(const QString &response,

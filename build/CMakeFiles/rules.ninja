@@ -6,7 +6,7 @@
 # It is included in the main 'build.ninja'.
 
 # =============================================================================
-# Project: ai_verification_studio
+# Project: ai_verif_studio
 # Configurations: 
 # =============================================================================
 # =============================================================================
@@ -14,7 +14,7 @@
 #############################################
 # Rule for compiling CXX files.
 
-rule CXX_COMPILER__ai_verification_studio_unscanned_
+rule CXX_COMPILER__ai_verif_studio_unscanned_
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\Qt\Tools\mingw1310_64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -24,7 +24,7 @@ rule CXX_COMPILER__ai_verification_studio_unscanned_
 #############################################
 # Rule for linking CXX executable.
 
-rule CXX_EXECUTABLE_LINKER__ai_verification_studio_
+rule CXX_EXECUTABLE_LINKER__ai_verif_studio_
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\Qt\Tools\mingw1310_64\bin\c++.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = C:\Qt\Tools\CMake_64\bin\cmake.exe --regenerate-during-build -SC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio -BC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build
+  command = C:\Qt\Tools\CMake_64\bin\cmake.exe --regenerate-during-build -SC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio -BC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3
   description = Re-running CMake...
   generator = 1
 

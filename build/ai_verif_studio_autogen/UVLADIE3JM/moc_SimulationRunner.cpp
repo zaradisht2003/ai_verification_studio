@@ -46,6 +46,8 @@ template <> constexpr inline auto SimulationRunner::qt_create_metaobjectdata<qt_
         "error",
         "processFinished",
         "exitCode",
+        "scpFinished",
+        "sshFinished",
         "cancelSimulation",
         "onReadyReadStandardOutput",
         "onReadyReadStandardError",
@@ -67,15 +69,23 @@ template <> constexpr inline auto SimulationRunner::qt_create_metaobjectdata<qt_
         QtMocHelpers::SignalData<void(int)>(6, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::Int, 7 },
         }}),
+        // Signal 'scpFinished'
+        QtMocHelpers::SignalData<void(int)>(8, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 7 },
+        }}),
+        // Signal 'sshFinished'
+        QtMocHelpers::SignalData<void(int)>(9, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 7 },
+        }}),
         // Slot 'cancelSimulation'
-        QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'onReadyReadStandardOutput'
-        QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onReadyReadStandardError'
-        QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onProcessFinished'
-        QtMocHelpers::SlotData<void(int, QProcess::ExitStatus)>(11, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Int, 7 }, { 0x80000000 | 12, 13 },
+        QtMocHelpers::SlotData<void(int, QProcess::ExitStatus)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 7 }, { 0x80000000 | 14, 15 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -103,10 +113,12 @@ void SimulationRunner::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 0: _t->outputReceived((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
         case 1: _t->errorReceived((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
         case 2: _t->processFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
-        case 3: _t->cancelSimulation(); break;
-        case 4: _t->onReadyReadStandardOutput(); break;
-        case 5: _t->onReadyReadStandardError(); break;
-        case 6: _t->onProcessFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QProcess::ExitStatus>>(_a[2]))); break;
+        case 3: _t->scpFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 4: _t->sshFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
+        case 5: _t->cancelSimulation(); break;
+        case 6: _t->onReadyReadStandardOutput(); break;
+        case 7: _t->onReadyReadStandardError(); break;
+        case 8: _t->onProcessFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1])),(*reinterpret_cast<std::add_pointer_t<QProcess::ExitStatus>>(_a[2]))); break;
         default: ;
         }
     }
@@ -116,6 +128,10 @@ void SimulationRunner::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         if (QtMocHelpers::indexOfMethod<void (SimulationRunner::*)(const QString & )>(_a, &SimulationRunner::errorReceived, 1))
             return;
         if (QtMocHelpers::indexOfMethod<void (SimulationRunner::*)(int )>(_a, &SimulationRunner::processFinished, 2))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (SimulationRunner::*)(int )>(_a, &SimulationRunner::scpFinished, 3))
+            return;
+        if (QtMocHelpers::indexOfMethod<void (SimulationRunner::*)(int )>(_a, &SimulationRunner::sshFinished, 4))
             return;
     }
 }
@@ -139,14 +155,14 @@ int SimulationRunner::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 9;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 9;
     }
     return _id;
 }
@@ -167,5 +183,17 @@ void SimulationRunner::errorReceived(const QString & _t1)
 void SimulationRunner::processFinished(int _t1)
 {
     QMetaObject::activate<void>(this, &staticMetaObject, 2, nullptr, _t1);
+}
+
+// SIGNAL 3
+void SimulationRunner::scpFinished(int _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 3, nullptr, _t1);
+}
+
+// SIGNAL 4
+void SimulationRunner::sshFinished(int _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 4, nullptr, _t1);
 }
 QT_WARNING_POP

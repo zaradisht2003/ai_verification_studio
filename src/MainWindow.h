@@ -3,11 +3,13 @@
 
 #include "LlmClient.h"
 #include "SimulationRunner.h"
+#include <QCheckBox>
 #include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
 #include <QMainWindow>
 #include <QPushButton>
+#include <QSpinBox>
 #include <QTabWidget>
 #include <QTextEdit>
 
@@ -30,6 +32,9 @@ private slots:
   void onApiTimerTick();
   void onSimulationOutputReceived(const QString &output);
   void onSimulationErrorReceived(const QString &error);
+  void onScpFinished(int exitCode);
+  void onSshFinished(int exitCode);
+  void handleSimulationLoop();
 
 private:
   void setupUi();
@@ -57,8 +62,10 @@ private:
   QComboBox *llmProviderCombo;
   QLineEdit *llmApiKeyInput;
   QLineEdit *sshHostInput;
-  QLineEdit *sshUserInput;
-  QLineEdit *sshPassInput;
+  QLineEdit *sshKeyInput;
+  QLineEdit *remoteDirInput;
+  QSpinBox *coverageGoalInput;
+  QCheckBox *autoImproveCheckbox;
 
   // Core Logic
   LlmClient *llmClient;
@@ -66,6 +73,11 @@ private:
   QTimer *apiWaitTimer;
   int apiElapsedSeconds;
   int lastUploadLogPercent = -1;
+
+  // Feedback Loop State
+  enum class SimState { Idle, RunningSimulation, WaitingForLlm };
+  SimState currentSimState = SimState::Idle;
+  QString lastGeneratedCode;
 };
 
 #endif // MAINWINDOW_H

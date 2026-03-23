@@ -686,7 +686,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h
- mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_studio_v2_autogen/moc_predefs.h
+ mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.h
  mmc:Q_OBJECT
@@ -1058,11 +1058,13 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.
  mdp:C:/Qt/6.10.2/mingw_64/include/QtNetwork/qtnetwork-config.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtNetwork/qtnetworkexports.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtNetwork/qtnetworkglobal.h
+ mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QCheckBox
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QComboBox
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QLabel
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QLineEdit
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QMainWindow
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QPushButton
+ mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QSpinBox
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QTabWidget
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/QTextEdit
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractbutton.h
@@ -1070,6 +1072,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractscrollarea.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractslider.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractspinbox.h
+ mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qcheckbox.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qcombobox.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qframe.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qlabel.h
@@ -1079,6 +1082,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qrubberband.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qsizepolicy.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qslider.h
+ mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qspinbox.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qstyle.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qstyleoption.h
  mdp:C:/Qt/6.10.2/mingw_64/include/QtWidgets/qtabbar.h
@@ -1439,7 +1443,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h
- mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_studio_v2_autogen/moc_predefs.h
+ mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.h
@@ -1762,7 +1766,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationR
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/time.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
- mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_studio_v2_autogen/moc_predefs.h
+ mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.h
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.cpp
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.cpp

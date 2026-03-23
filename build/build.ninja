@@ -11,7 +11,7 @@
 # =============================================================================
 
 # =============================================================================
-# Project: ai_verification_studio
+# Project: ai_verif_studio
 # Configurations: 
 # =============================================================================
 
@@ -34,91 +34,91 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/
+cmake_ninja_workdir = C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/
 # =============================================================================
-# Object build statements for EXECUTABLE target ai_verification_studio
+# Object build statements for EXECUTABLE target ai_verif_studio
 
 
 #############################################
-# Order-only phony target for ai_verification_studio
+# Order-only phony target for ai_verif_studio
 
-build cmake_object_order_depends_target_ai_verification_studio: phony || ai_verification_studio_autogen ai_verification_studio_autogen/mocs_compilation.cpp ai_verification_studio_autogen/timestamp ai_verification_studio_autogen_timestamp_deps
+build cmake_object_order_depends_target_ai_verif_studio: phony || ai_verif_studio_autogen ai_verif_studio_autogen/mocs_compilation.cpp ai_verif_studio_autogen/timestamp ai_verif_studio_autogen_timestamp_deps
 
-build CMakeFiles/ai_verification_studio.dir/ai_verification_studio_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__ai_verification_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_ai_verification_studio
+build CMakeFiles/ai_verif_studio.dir/ai_verif_studio_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__ai_verif_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_ai_verif_studio
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\ai_verification_studio.dir\ai_verification_studio_autogen\mocs_compilation.cpp.obj.d
+  DEP_FILE = CMakeFiles\ai_verif_studio.dir\ai_verif_studio_autogen\mocs_compilation.cpp.obj.d
   FLAGS = -std=gnu++17
-  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
-  OBJECT_DIR = CMakeFiles\ai_verification_studio.dir
-  OBJECT_FILE_DIR = CMakeFiles\ai_verification_studio.dir\ai_verification_studio_autogen
-  TARGET_COMPILE_PDB = CMakeFiles\ai_verification_studio.dir\
-  TARGET_PDB = ai_verification_studio.pdb
+  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
+  OBJECT_DIR = CMakeFiles\ai_verif_studio.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai_verif_studio.dir\ai_verif_studio_autogen
+  TARGET_COMPILE_PDB = CMakeFiles\ai_verif_studio.dir\
+  TARGET_PDB = ai_verif_studio.pdb
 
-build CMakeFiles/ai_verification_studio.dir/src/LlmClient.cpp.obj: CXX_COMPILER__ai_verification_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.cpp || cmake_object_order_depends_target_ai_verification_studio
+build CMakeFiles/ai_verif_studio.dir/src/LlmClient.cpp.obj: CXX_COMPILER__ai_verif_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.cpp || cmake_object_order_depends_target_ai_verif_studio
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\ai_verification_studio.dir\src\LlmClient.cpp.obj.d
+  DEP_FILE = CMakeFiles\ai_verif_studio.dir\src\LlmClient.cpp.obj.d
   FLAGS = -std=gnu++17
-  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
-  OBJECT_DIR = CMakeFiles\ai_verification_studio.dir
-  OBJECT_FILE_DIR = CMakeFiles\ai_verification_studio.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\ai_verification_studio.dir\
-  TARGET_PDB = ai_verification_studio.pdb
+  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
+  OBJECT_DIR = CMakeFiles\ai_verif_studio.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai_verif_studio.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\ai_verif_studio.dir\
+  TARGET_PDB = ai_verif_studio.pdb
 
-build CMakeFiles/ai_verification_studio.dir/src/MainWindow.cpp.obj: CXX_COMPILER__ai_verification_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.cpp || cmake_object_order_depends_target_ai_verification_studio
+build CMakeFiles/ai_verif_studio.dir/src/MainWindow.cpp.obj: CXX_COMPILER__ai_verif_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.cpp || cmake_object_order_depends_target_ai_verif_studio
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\ai_verification_studio.dir\src\MainWindow.cpp.obj.d
+  DEP_FILE = CMakeFiles\ai_verif_studio.dir\src\MainWindow.cpp.obj.d
   FLAGS = -std=gnu++17
-  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
-  OBJECT_DIR = CMakeFiles\ai_verification_studio.dir
-  OBJECT_FILE_DIR = CMakeFiles\ai_verification_studio.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\ai_verification_studio.dir\
-  TARGET_PDB = ai_verification_studio.pdb
+  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
+  OBJECT_DIR = CMakeFiles\ai_verif_studio.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai_verif_studio.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\ai_verif_studio.dir\
+  TARGET_PDB = ai_verif_studio.pdb
 
-build CMakeFiles/ai_verification_studio.dir/src/SimulationRunner.cpp.obj: CXX_COMPILER__ai_verification_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.cpp || cmake_object_order_depends_target_ai_verification_studio
+build CMakeFiles/ai_verif_studio.dir/src/SimulationRunner.cpp.obj: CXX_COMPILER__ai_verif_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.cpp || cmake_object_order_depends_target_ai_verif_studio
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\ai_verification_studio.dir\src\SimulationRunner.cpp.obj.d
+  DEP_FILE = CMakeFiles\ai_verif_studio.dir\src\SimulationRunner.cpp.obj.d
   FLAGS = -std=gnu++17
-  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
-  OBJECT_DIR = CMakeFiles\ai_verification_studio.dir
-  OBJECT_FILE_DIR = CMakeFiles\ai_verification_studio.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\ai_verification_studio.dir\
-  TARGET_PDB = ai_verification_studio.pdb
+  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
+  OBJECT_DIR = CMakeFiles\ai_verif_studio.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai_verif_studio.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\ai_verif_studio.dir\
+  TARGET_PDB = ai_verif_studio.pdb
 
-build CMakeFiles/ai_verification_studio.dir/src/main.cpp.obj: CXX_COMPILER__ai_verification_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/main.cpp || cmake_object_order_depends_target_ai_verification_studio
+build CMakeFiles/ai_verif_studio.dir/src/main.cpp.obj: CXX_COMPILER__ai_verif_studio_unscanned_ C$:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/main.cpp || cmake_object_order_depends_target_ai_verif_studio
   DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CONCURRENT_LIB -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_NETWORK_LIB -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
-  DEP_FILE = CMakeFiles\ai_verification_studio.dir\src\main.cpp.obj.d
+  DEP_FILE = CMakeFiles\ai_verif_studio.dir\src\main.cpp.obj.d
   FLAGS = -std=gnu++17
-  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
-  OBJECT_DIR = CMakeFiles\ai_verification_studio.dir
-  OBJECT_FILE_DIR = CMakeFiles\ai_verification_studio.dir\src
-  TARGET_COMPILE_PDB = CMakeFiles\ai_verification_studio.dir\
-  TARGET_PDB = ai_verification_studio.pdb
+  INCLUDES = -IC:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/include -isystem C:/Qt/6.10.2/mingw_64/include/QtCore -isystem C:/Qt/6.10.2/mingw_64/include -isystem C:/Qt/6.10.2/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.10.2/mingw_64/include/QtGui -isystem C:/Qt/6.10.2/mingw_64/include/QtWidgets -isystem C:/Qt/6.10.2/mingw_64/include/QtNetwork -isystem C:/Qt/6.10.2/mingw_64/include/QtConcurrent
+  OBJECT_DIR = CMakeFiles\ai_verif_studio.dir
+  OBJECT_FILE_DIR = CMakeFiles\ai_verif_studio.dir\src
+  TARGET_COMPILE_PDB = CMakeFiles\ai_verif_studio.dir\
+  TARGET_PDB = ai_verif_studio.pdb
 
 
 # =============================================================================
-# Link build statements for EXECUTABLE target ai_verification_studio
+# Link build statements for EXECUTABLE target ai_verif_studio
 
 
 #############################################
-# Link the executable ai_verification_studio.exe
+# Link the executable ai_verif_studio.exe
 
-build ai_verification_studio.exe: CXX_EXECUTABLE_LINKER__ai_verification_studio_ CMakeFiles/ai_verification_studio.dir/ai_verification_studio_autogen/mocs_compilation.cpp.obj CMakeFiles/ai_verification_studio.dir/src/LlmClient.cpp.obj CMakeFiles/ai_verification_studio.dir/src/MainWindow.cpp.obj CMakeFiles/ai_verification_studio.dir/src/SimulationRunner.cpp.obj CMakeFiles/ai_verification_studio.dir/src/main.cpp.obj | C$:/Qt/6.10.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Network.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Concurrent.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Core.a C$:/Qt/6.10.2/mingw_64/lib/libQt6EntryPoint.a || ai_verification_studio_autogen ai_verification_studio_autogen_timestamp_deps
+build ai_verif_studio.exe: CXX_EXECUTABLE_LINKER__ai_verif_studio_ CMakeFiles/ai_verif_studio.dir/ai_verif_studio_autogen/mocs_compilation.cpp.obj CMakeFiles/ai_verif_studio.dir/src/LlmClient.cpp.obj CMakeFiles/ai_verif_studio.dir/src/MainWindow.cpp.obj CMakeFiles/ai_verif_studio.dir/src/SimulationRunner.cpp.obj CMakeFiles/ai_verif_studio.dir/src/main.cpp.obj | C$:/Qt/6.10.2/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Network.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Concurrent.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Gui.a C$:/Qt/6.10.2/mingw_64/lib/libQt6Core.a C$:/Qt/6.10.2/mingw_64/lib/libQt6EntryPoint.a || ai_verif_studio_autogen ai_verif_studio_autogen_timestamp_deps
   LINK_FLAGS = -mwindows
   LINK_LIBRARIES = C:/Qt/6.10.2/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.10.2/mingw_64/lib/libQt6Network.a  C:/Qt/6.10.2/mingw_64/lib/libQt6Concurrent.a  C:/Qt/6.10.2/mingw_64/lib/libQt6Gui.a  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lws2_32  C:/Qt/6.10.2/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.10.2/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
-  OBJECT_DIR = CMakeFiles\ai_verification_studio.dir
-  POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build && C:\Qt\6.10.2\mingw_64\bin\windeployqt.exe --no-opengl-sw --no-translations "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio.exe""
+  OBJECT_DIR = CMakeFiles\ai_verif_studio.dir
+  POST_BUILD = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3 && C:\Qt\6.10.2\mingw_64\bin\windeployqt.exe --no-opengl-sw --no-translations "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio.exe""
   PRE_LINK = cd .
-  TARGET_COMPILE_PDB = CMakeFiles\ai_verification_studio.dir\
-  TARGET_FILE = ai_verification_studio.exe
-  TARGET_IMPLIB = libai_verification_studio.dll.a
-  TARGET_PDB = ai_verification_studio.pdb
+  TARGET_COMPILE_PDB = CMakeFiles\ai_verif_studio.dir\
+  TARGET_FILE = ai_verif_studio.exe
+  TARGET_IMPLIB = libai_verif_studio.dll.a
+  TARGET_PDB = ai_verif_studio.pdb
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build && C:\Qt\Tools\CMake_64\bin\cmake-gui.exe -SC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio -BC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build"
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3 && C:\Qt\Tools\CMake_64\bin\cmake-gui.exe -SC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio -BC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3"
   DESC = Running CMake cache editor...
   pool = console
   restat = 1
@@ -130,7 +130,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build && C:\Qt\Tools\CMake_64\bin\cmake.exe --regenerate-during-build -SC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio -BC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build"
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3 && C:\Qt\Tools\CMake_64\bin\cmake.exe --regenerate-during-build -SC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio -BC:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3"
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -139,37 +139,37 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 
 
 #############################################
-# Utility command for ai_verification_studio_autogen_timestamp_deps
+# Utility command for ai_verif_studio_autogen_timestamp_deps
 
-build ai_verification_studio_autogen_timestamp_deps: phony
-
-
-#############################################
-# Utility command for ai_verification_studio_autogen
-
-build ai_verification_studio_autogen: phony CMakeFiles/ai_verification_studio_autogen ai_verification_studio_autogen/timestamp ai_verification_studio_autogen/mocs_compilation.cpp ai_verification_studio_autogen_timestamp_deps
+build ai_verif_studio_autogen_timestamp_deps: phony
 
 
 #############################################
-# Custom command for ai_verification_studio_autogen\timestamp
+# Utility command for ai_verif_studio_autogen
 
-build ai_verification_studio_autogen/timestamp ai_verification_studio_autogen/mocs_compilation.cpp | ${cmake_ninja_workdir}ai_verification_studio_autogen/timestamp ${cmake_ninja_workdir}ai_verification_studio_autogen/mocs_compilation.cpp: CUSTOM_COMMAND C$:/Qt/6.10.2/mingw_64/bin/moc.exe C$:/Qt/6.10.2/mingw_64/bin/uic.exe || ai_verification_studio_autogen_timestamp_deps
-  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_autogen C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/ai_verification_studio_autogen.dir/AutogenInfo.json "" && C:\Qt\Tools\CMake_64\bin\cmake.exe -E touch C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/timestamp && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_transform_depfile Ninja gccdepfile C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/deps C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/d/9ff567b9f48dca178221ba98ced7037770b11657c4eb0d0ee7790182210347e7.d"
-  DESC = Automatic MOC and UIC for target ai_verification_studio
-  depfile = CMakeFiles\d\9ff567b9f48dca178221ba98ced7037770b11657c4eb0d0ee7790182210347e7.d
+build ai_verif_studio_autogen: phony CMakeFiles/ai_verif_studio_autogen ai_verif_studio_autogen/timestamp ai_verif_studio_autogen/mocs_compilation.cpp ai_verif_studio_autogen_timestamp_deps
+
+
+#############################################
+# Custom command for ai_verif_studio_autogen\timestamp
+
+build ai_verif_studio_autogen/timestamp ai_verif_studio_autogen/mocs_compilation.cpp | ${cmake_ninja_workdir}ai_verif_studio_autogen/timestamp ${cmake_ninja_workdir}ai_verif_studio_autogen/mocs_compilation.cpp: CUSTOM_COMMAND C$:/Qt/6.10.2/mingw_64/bin/moc.exe C$:/Qt/6.10.2/mingw_64/bin/uic.exe || ai_verif_studio_autogen_timestamp_deps
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build3 && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_autogen C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/ai_verif_studio_autogen.dir/AutogenInfo.json "" && C:\Qt\Tools\CMake_64\bin\cmake.exe -E touch C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/timestamp && C:\Qt\Tools\CMake_64\bin\cmake.exe -E cmake_transform_depfile Ninja gccdepfile C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/deps C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/d/646c157093bc3a4a47b6afd9568c45cf5671ea4be89c0707cb0bc3d42ecabb86.d"
+  DESC = Automatic MOC and UIC for target ai_verif_studio
+  depfile = CMakeFiles\d\646c157093bc3a4a47b6afd9568c45cf5671ea4be89c0707cb0bc3d42ecabb86.d
   deps = gcc
   restat = 1
 
 
 #############################################
-# Phony custom command for CMakeFiles\ai_verification_studio_autogen
+# Phony custom command for CMakeFiles\ai_verif_studio_autogen
 
-build CMakeFiles/ai_verification_studio_autogen | ${cmake_ninja_workdir}CMakeFiles/ai_verification_studio_autogen: phony ai_verification_studio_autogen/timestamp || ai_verification_studio_autogen_timestamp_deps
+build CMakeFiles/ai_verif_studio_autogen | ${cmake_ninja_workdir}CMakeFiles/ai_verif_studio_autogen: phony ai_verif_studio_autogen/timestamp || ai_verif_studio_autogen_timestamp_deps
 
 # =============================================================================
 # Target aliases.
 
-build ai_verification_studio: phony ai_verification_studio.exe
+build ai_verif_studio: phony ai_verif_studio.exe
 
 # =============================================================================
 # Folder targets.
@@ -177,9 +177,9 @@ build ai_verification_studio: phony ai_verification_studio.exe
 # =============================================================================
 
 #############################################
-# Folder: C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build
+# Folder: C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3
 
-build all: phony ai_verification_studio.exe
+build all: phony ai_verif_studio.exe
 
 # =============================================================================
 # Built-in targets

@@ -1,5 +1,5 @@
-C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/UVLADIE3JM/moc_MainWindow.cpp: C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.h \
-  C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verification_studio_autogen/moc_predefs.h \
+C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/UVLADIE3JM/moc_MainWindow.cpp: C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.h \
+  C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h \
   C:/Qt/6.10.2/mingw_64/include/QtConcurrent/QtConcurrent \
   C:/Qt/6.10.2/mingw_64/include/QtConcurrent/QtConcurrentDepends \
   C:/Qt/6.10.2/mingw_64/include/QtConcurrent/qtaskbuilder.h \
@@ -368,11 +368,13 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verifi
   C:/Qt/6.10.2/mingw_64/include/QtNetwork/qtnetwork-config.h \
   C:/Qt/6.10.2/mingw_64/include/QtNetwork/qtnetworkexports.h \
   C:/Qt/6.10.2/mingw_64/include/QtNetwork/qtnetworkglobal.h \
+  C:/Qt/6.10.2/mingw_64/include/QtWidgets/QCheckBox \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QComboBox \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QLabel \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QLineEdit \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QMainWindow \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QPushButton \
+  C:/Qt/6.10.2/mingw_64/include/QtWidgets/QSpinBox \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QTabWidget \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/QTextEdit \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractbutton.h \
@@ -380,6 +382,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verifi
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractscrollarea.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractslider.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qabstractspinbox.h \
+  C:/Qt/6.10.2/mingw_64/include/QtWidgets/qcheckbox.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qcombobox.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qframe.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qlabel.h \
@@ -389,6 +392,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verifi
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qrubberband.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qsizepolicy.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qslider.h \
+  C:/Qt/6.10.2/mingw_64/include/QtWidgets/qspinbox.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qstyle.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qstyleoption.h \
   C:/Qt/6.10.2/mingw_64/include/QtWidgets/qtabbar.h \

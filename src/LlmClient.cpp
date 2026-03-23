@@ -81,6 +81,12 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
                          QString("Bearer %1").arg(apiKey).toUtf8());
     request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
     request.setRawHeader("X-Title", "AI Verification Studio");
+  } else if (currentProvider == LlmClient::Provider::Codestral) {
+    url = QUrl("https://api.mistral.ai/v1/chat/completions");
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Authorization",
+                         QString("Bearer %1").arg(apiKey).toUtf8());
   } else {
     url = QUrl(QString("https://generativelanguage.googleapis.com/v1beta/"
                        "models/gemini-2.5-flash:generateContent?key=%1")
@@ -106,6 +112,9 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
   QFuture<QByteArray> future;
   if (currentProvider == Provider::OpenRouter) {
     future = QtConcurrent::run(LlmClient::buildOpenRouterMultimodalPayload,
+                               systemInstruction, prompt, pdfFilePath);
+  } else if (currentProvider == Provider::Codestral) {
+    future = QtConcurrent::run(LlmClient::buildCodestralMultimodalPayload,
                                systemInstruction, prompt, pdfFilePath);
   } else {
     future = QtConcurrent::run(LlmClient::buildGeminiMultimodalPayload,
@@ -248,6 +257,31 @@ void LlmClient::generateSystemVerilog(const QString &testPlanJson) {
   sendRequest(testPlanJson, systemInstruction, "code");
 }
 
+void LlmClient::improveSystemVerilog(const QString &currentCode,
+                                     const QString &simLogs, int currentCov,
+                                     int targetCov) {
+  QString systemInstruction =
+      "You are a senior SystemVerilog verification engineer. "
+      "You will be provided with the current testbench code and the simulation "
+      "output/coverage report. "
+      "Your task is to analyze the coverage gaps or simulation errors, and "
+      "modify the testbench "
+      "to achieve the target coverage or fix the errors. "
+      "Provide the complete, updated SystemVerilog code. "
+      "Output ONLY the raw SystemVerilog code without markdown formatting (no "
+      "```sv ... ```).";
+
+  QString prompt =
+      QString("Current Coverage: %1%\nTarget Coverage: %2%\n\nSimulation Logs "
+              "& Coverage Report:\n%3\n\nCurrent Testbench Code:\n%4")
+          .arg(currentCov)
+          .arg(targetCov)
+          .arg(simLogs)
+          .arg(currentCode);
+
+  sendRequest(prompt, systemInstruction, "code");
+}
+
 void LlmClient::sendRequest(const QString &prompt,
                             const QString &systemInstruction,
                             const QString &responseType) {
@@ -269,6 +303,12 @@ void LlmClient::sendRequest(const QString &prompt,
                          QString("Bearer %1").arg(apiKey).toUtf8());
     request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
     request.setRawHeader("X-Title", "AI Verification Studio");
+  } else if (currentProvider == LlmClient::Provider::Codestral) {
+    url = QUrl("https://api.mistral.ai/v1/chat/completions");
+    request.setUrl(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    request.setRawHeader("Authorization",
+                         QString("Bearer %1").arg(apiKey).toUtf8());
   } else {
     url = QUrl(QString("https://generativelanguage.googleapis.com/v1beta/"
                        "models/gemini-2.5-flash:generateContent?key=%1")
@@ -290,6 +330,9 @@ void LlmClient::sendRequest(const QString &prompt,
   QFuture<QByteArray> future;
   if (currentProvider == LlmClient::Provider::OpenRouter) {
     future = QtConcurrent::run(LlmClient::buildOpenRouterTextPayload,
+                               systemInstruction, prompt);
+  } else if (currentProvider == LlmClient::Provider::Codestral) {
+    future = QtConcurrent::run(LlmClient::buildCodestralTextPayload,
                                systemInstruction, prompt);
   } else {
     future = QtConcurrent::run(LlmClient::buildGeminiTextPayload,
@@ -380,7 +423,8 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
         bool foundCompleteText = false;
         QString textResponse;
 
-        if (currentProvider == LlmClient::Provider::OpenRouter) {
+        if (currentProvider == LlmClient::Provider::OpenRouter ||
+            currentProvider == LlmClient::Provider::Codestral) {
           if (jsonObject.contains("choices")) {
             QJsonArray choices = jsonObject["choices"].toArray();
             if (!choices.isEmpty()) {
@@ -446,7 +490,7 @@ LlmClient::buildOpenRouterTextPayload(const QString &systemInstruction,
 
   // Use a fast/default model on OpenRouter for pure text (e.g., Llama 3 or
   // Gemini)
-  requestBody["model"] = "meta-llama/llama-3.3-70b-instruct";
+  requestBody["model"] = "openrouter/auto";
 
   QJsonObject responseFormatObj;
   responseFormatObj["type"] = "json_object";
@@ -619,7 +663,8 @@ void LlmClient::onReplyFinished() {
   bool parsedSuccessfully = false;
   QString textResponse;
 
-  if (currentProvider == LlmClient::Provider::OpenRouter) {
+  if (currentProvider == LlmClient::Provider::OpenRouter ||
+      currentProvider == LlmClient::Provider::Codestral) {
     if (jsonObject.contains("choices") && jsonObject["choices"].isArray()) {
       QJsonArray choices = jsonObject["choices"].toArray();
       if (!choices.isEmpty()) {
@@ -667,4 +712,88 @@ void LlmClient::onReplyFinished() {
   }
 
   reply->deleteLater();
+}
+
+QByteArray
+LlmClient::buildCodestralTextPayload(const QString &systemInstruction,
+                                     const QString &prompt) {
+  QJsonObject requestBody;
+  requestBody["model"] = "codestral-latest";
+
+  QJsonObject responseFormatObj;
+  responseFormatObj["type"] = "json_object";
+  requestBody["response_format"] = responseFormatObj;
+
+  requestBody["max_tokens"] = 8192;
+
+  QJsonArray messagesArray;
+
+  QJsonObject systemMessage;
+  systemMessage["role"] = "system";
+  systemMessage["content"] = systemInstruction;
+  messagesArray.append(systemMessage);
+
+  QJsonObject userMessage;
+  userMessage["role"] = "user";
+  userMessage["content"] = prompt;
+  messagesArray.append(userMessage);
+
+  requestBody["messages"] = messagesArray;
+
+  QJsonDocument doc(requestBody);
+  return doc.toJson(QJsonDocument::Compact);
+}
+
+QByteArray
+LlmClient::buildCodestralMultimodalPayload(const QString &systemInstruction,
+                                           const QString &prompt,
+                                           const QString &pdfFilePath) {
+  QFile file(pdfFilePath);
+  if (!file.open(QIODevice::ReadOnly)) {
+    return QByteArray();
+  }
+
+  QByteArray fileData = file.readAll();
+  QString base64Data = fileData.toBase64();
+  file.close();
+
+  QJsonObject requestBody;
+  requestBody["model"] = "codestral-latest";
+
+  QJsonObject responseFormatObj;
+  responseFormatObj["type"] = "json_object";
+  requestBody["response_format"] = responseFormatObj;
+
+  requestBody["max_tokens"] = 8192;
+
+  QJsonArray messagesArray;
+
+  QJsonObject systemMessage;
+  systemMessage["role"] = "system";
+  systemMessage["content"] = systemInstruction;
+  messagesArray.append(systemMessage);
+
+  QJsonObject userMessage;
+  userMessage["role"] = "user";
+  QJsonArray contentArray;
+
+  QJsonObject textPart;
+  textPart["type"] = "text";
+  textPart["text"] = prompt;
+  contentArray.append(textPart);
+
+  QJsonObject imagePart;
+  imagePart["type"] = "image_url";
+  QJsonObject imageUrlObj;
+  imageUrlObj["url"] = "data:application/pdf;base64," + base64Data;
+  imagePart["image_url"] = imageUrlObj;
+  contentArray.append(imagePart);
+
+  userMessage["content"] = contentArray;
+  messagesArray.append(userMessage);
+
+  requestBody["messages"] = messagesArray;
+
+  QJsonDocument doc(requestBody);
+  return doc.toJson(QJsonDocument::Compact);
 }

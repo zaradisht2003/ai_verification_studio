@@ -13,7 +13,7 @@ class LlmClient : public QObject {
   Q_OBJECT
 
 public:
-  enum class Provider { OpenRouter, Gemini };
+  enum class Provider { OpenRouter, Gemini, Codestral };
 
   explicit LlmClient(QObject *parent = nullptr);
   ~LlmClient();
@@ -28,6 +28,11 @@ public:
 
   // Sends a test plan to generate SystemVerilog code
   void generateSystemVerilog(const QString &testPlanJson);
+
+  // Sends current code and simulation logs to improve the testbench for
+  // coverage
+  void improveSystemVerilog(const QString &currentCode, const QString &simLogs,
+                            int currentCov, int targetCov);
 
 signals:
   void responseReceived(const QString &response, const QString &type);
@@ -57,6 +62,13 @@ private:
                                const QString &pdfFilePath);
   static QByteArray buildGeminiTextPayload(const QString &systemInstruction,
                                            const QString &prompt);
+
+  static QByteArray
+  buildCodestralMultimodalPayload(const QString &systemInstruction,
+                                  const QString &prompt,
+                                  const QString &pdfFilePath);
+  static QByteArray buildCodestralTextPayload(const QString &systemInstruction,
+                                              const QString &prompt);
 
   QString apiKey;
   Provider currentProvider = Provider::OpenRouter;

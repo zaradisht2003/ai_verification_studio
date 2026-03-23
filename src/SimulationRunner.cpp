@@ -1,7 +1,7 @@
 #include "SimulationRunner.h"
 
 SimulationRunner::SimulationRunner(QObject *parent)
-    : QObject(parent), process(new QProcess(this)) {
+    : QObject(parent), process(new QProcess(this)), isScpProcess(false) {
   connect(process, &QProcess::readyReadStandardOutput, this,
           &SimulationRunner::onReadyReadStandardOutput);
   connect(process, &QProcess::readyReadStandardError, this,
@@ -18,17 +18,45 @@ SimulationRunner::~SimulationRunner() {
 }
 
 void SimulationRunner::runSshCommand(const QString &sshTarget,
+                                     const QString &sshKey,
                                      const QString &command) {
   if (process->state() == QProcess::Running) {
     emit errorReceived("A simulation is already running.");
     return;
   }
+  isScpProcess = false;
 
-  // Typical Windows usage of SSH without strictly requiring PuTTY if Windows
-  // 10+ ssh.exe is available
   QString program = "ssh";
   QStringList arguments;
+  if (!sshKey.isEmpty()) {
+    arguments << "-i" << sshKey;
+  }
+
+  // Use -o StrictHostKeyChecking=no to avoid prompt blocks if user directories
+  // are restricted or known_hosts is inaccessible
+  arguments << "-o" << "StrictHostKeyChecking=no";
   arguments << "-T" << sshTarget << command;
+
+  process->start(program, arguments);
+}
+
+void SimulationRunner::scpFile(const QString &sshTarget, const QString &sshKey,
+                               const QString &localPath,
+                               const QString &remotePath) {
+  if (process->state() == QProcess::Running) {
+    emit errorReceived("A process is already running.");
+    return;
+  }
+  isScpProcess = true;
+
+  QString program = "scp";
+  QStringList arguments;
+  if (!sshKey.isEmpty()) {
+    arguments << "-i" << sshKey;
+  }
+
+  arguments << "-o" << "StrictHostKeyChecking=no";
+  arguments << localPath << QString("%1:%2").arg(sshTarget).arg(remotePath);
 
   process->start(program, arguments);
 }
@@ -54,4 +82,9 @@ void SimulationRunner::onReadyReadStandardError() {
 void SimulationRunner::onProcessFinished(int exitCode,
                                          QProcess::ExitStatus exitStatus) {
   emit processFinished(exitCode);
+  if (isScpProcess) {
+    emit scpFinished(exitCode);
+  } else {
+    emit sshFinished(exitCode);
+  }
 }
