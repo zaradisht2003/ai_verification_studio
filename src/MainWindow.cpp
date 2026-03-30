@@ -7,7 +7,7 @@
 #include <QLabel>
 #include <QMessageBox>
 #include <QRegularExpression>
-#include <QSpinBox>
+#include <QRegularExpression>
 #include <QSplitter>
 #include <QStatusBar>
 #include <QTimer>
@@ -117,6 +117,10 @@ void MainWindow::createCentralWidget() {
       QVariant::fromValue(static_cast<int>(LlmClient::Provider::Gemini)));
   llmProviderCombo->addItem("Codestral", QVariant::fromValue(static_cast<int>(
                                              LlmClient::Provider::Codestral)));
+  llmProviderCombo->addItem("OpenAI", QVariant::fromValue(static_cast<int>(
+                                          LlmClient::Provider::OpenAI)));
+  llmProviderCombo->addItem("Groq", QVariant::fromValue(static_cast<int>(
+                                        LlmClient::Provider::Groq)));
 
   llmApiKeyInput = new QLineEdit(this);
   llmApiKeyInput->setEchoMode(QLineEdit::Password);
@@ -131,10 +135,7 @@ void MainWindow::createCentralWidget() {
   remoteDirInput = new QLineEdit(this);
   remoteDirInput->setPlaceholderText("e.g. ~/projects/my_ip");
 
-  coverageGoalInput = new QSpinBox(this);
-  coverageGoalInput->setRange(1, 100);
-  coverageGoalInput->setValue(100);
-  coverageGoalInput->setSuffix("%");
+  remoteDirInput->setPlaceholderText("e.g. ~/projects/my_ip");
 
   autoImproveCheckbox =
       new QCheckBox("Auto-Improve Testbench to reach Goal", this);
@@ -145,7 +146,6 @@ void MainWindow::createCentralWidget() {
   configLayout->addRow("SSH Target:", sshHostInput);
   configLayout->addRow("SSH Key Path:", sshKeyInput);
   configLayout->addRow("Remote RTL Dir:", remoteDirInput);
-  configLayout->addRow("Target Coverage:", coverageGoalInput);
   configLayout->addRow("", autoImproveCheckbox);
 
   rightLayout->addWidget(configGroup);
@@ -166,9 +166,14 @@ void MainWindow::createCentralWidget() {
   simulationLogTextEdit->setStyleSheet(
       "background-color: #1e1e1e; color: #d4d4d4;");
 
+  finalReportTextEdit = new QTextEdit(this);
+  finalReportTextEdit->setFont(monoFont);
+  finalReportTextEdit->setReadOnly(true);
+
   mainTabWidget->addTab(testPlanTextEdit, "Test Plan JSON");
   mainTabWidget->addTab(generatedCodeTextEdit, "SystemVerilog Code");
   mainTabWidget->addTab(simulationLogTextEdit, "Simulation Logs");
+  mainTabWidget->addTab(finalReportTextEdit, "Design Report");
 
   rightLayout->addWidget(mainTabWidget);
 
@@ -335,9 +340,7 @@ void MainWindow::onScpFinished(int exitCode) {
 
   // Command runs inside the user's remote directory. Does not require admin.
   QString command =
-      QString("cd %1 && vcs -full64 -sverilog -debug_access+all tb.sv *.sv -cm "
-              "line+cond+tgl && ./simv -cm line+cond+tgl && urg -dir simv.vdb "
-              "-report coverage_report && cat coverage_report/dashboard.txt")
+      QString("cd %1 && vcs -full64 -sverilog -debug_access+all tb.sv *.sv && ./simv")
           .arg(remoteDir);
   simulationRunner->runSshCommand(sshTarget, sshKey, command);
 }
@@ -347,49 +350,52 @@ void MainWindow::onSshFinished(int exitCode) {
     return;
   simulationLogTextEdit->append(
       QString("Simulation command finished with exit code %1.").arg(exitCode));
-  handleSimulationLoop();
+  handleSimulationLoop(exitCode);
 }
 
-void MainWindow::handleSimulationLoop() {
+void MainWindow::handleSimulationLoop(int exitCode) {
+  if (currentSimState != SimState::RunningSimulation)
+    return;
+
   QString logText = simulationLogTextEdit->toPlainText();
+  bool hasErrors = (exitCode != 0) || logText.contains("Error-") ||
+                   logText.contains("Error:") || logText.contains("UVM_ERROR") ||
+                   logText.contains("UVM_FATAL");
 
-  // Parse coverage from logText
-  // The urg dashboard.txt usually has a summary table. A simple regex could
-  // look for "TOTAL" or similar. For this example, let's look for "SCORE" or a
-  // percentage. We'll use a basic regex matching "TOTAL coverage" or just look
-  // for the last percentage if we can't find it precisely. A more robust regex
-  // for Urg dashboard is: \w+\s+(\d+\.\d+)
+  if (!hasErrors) {
+    simulationLogTextEdit->append(
+        "<span style='color:green'>No simulation errors found! Verification "
+        "Complete.</span>");
+    simulationLogTextEdit->append(
+        "<span style='color:cyan'>Requesting Final Design Report from "
+        "AI...</span>");
+    currentSimState = SimState::WaitingForReport;
 
-  int currentCoverage = 0; // default
-  QRegularExpression rx("TOTAL\\s+SCORE[\\s:]+([0-9]+)");
-  QRegularExpressionMatch match = rx.match(logText);
-  if (match.hasMatch()) {
-    currentCoverage = match.captured(1).toInt();
-  } else {
-    // Fallback: Just look for the word "Score" and a number
-    QRegularExpression rx2("Score[\\s:]+([0-9]+)");
-    QRegularExpressionMatch match2 = rx2.match(logText);
-    if (match2.hasMatch()) {
-      currentCoverage = match2.captured(1).toInt();
+    QString apiKey = llmApiKeyInput->text();
+    if (apiKey.isEmpty()) {
+      simulationLogTextEdit->append(
+          "<span style='color:red'>Cannot generate report: API Key is "
+          "missing.</span>");
+      currentSimState = SimState::Idle;
+      return;
     }
-  }
 
-  simulationLogTextEdit->append(
-      QString("<b>Parsed Current Coverage: %1%</b>").arg(currentCoverage));
+    LlmClient::Provider selectedProvider = static_cast<LlmClient::Provider>(
+        llmProviderCombo->currentData().toInt());
+    llmClient->setProvider(selectedProvider);
+    llmClient->setApiKey(apiKey);
 
-  int targetCoverage = coverageGoalInput->value();
+    llmClient->generateDesignReport(lastGeneratedCode, logText.right(4000));
 
-  if (currentCoverage >= targetCoverage) {
-    simulationLogTextEdit->append("<span style='color:green'>Coverage Goal "
-                                  "Met! Verification Complete.</span>");
-    currentSimState = SimState::Idle;
+    mainTabWidget->setCurrentWidget(finalReportTextEdit);
+    finalReportTextEdit->setPlainText("Thinking about design issues...");
+    apiElapsedSeconds = 0;
+    apiWaitTimer->start(1000); // Tick every 1 second
   } else {
     if (autoImproveCheckbox->isChecked()) {
       simulationLogTextEdit->append(
-          QString("<span style='color:orange'>Coverage %1% is below goal %2%. "
-                  "Requesting LLM improvement...</span>")
-              .arg(currentCoverage)
-              .arg(targetCoverage));
+          "<span style='color:orange'>Simulation errors detected. Requesting "
+          "LLM to fix testbench and failed cases...</span>");
       currentSimState = SimState::WaitingForLlm;
 
       QString apiKey = llmApiKeyInput->text();
@@ -405,12 +411,12 @@ void MainWindow::handleSimulationLoop() {
       llmClient->setProvider(selectedProvider);
       llmClient->setApiKey(apiKey);
 
-      // Call the new method to improve the testbench
-      llmClient->improveSystemVerilog(lastGeneratedCode, logText.right(4000),
-                                      currentCoverage, targetCoverage);
+      llmClient->improveSystemVerilog(lastGeneratedCode, logText.right(4000));
 
       mainTabWidget->setCurrentWidget(generatedCodeTextEdit);
-      generatedCodeTextEdit->setPlainText("Thinking about improvements...");
+      generatedCodeTextEdit->setPlainText("Thinking about testcase fixes...");
+      apiElapsedSeconds = 0;
+      apiWaitTimer->start(1000);
     } else {
       simulationLogTextEdit->append("Auto-Improve is disabled. Stopping loop.");
       currentSimState = SimState::Idle;
@@ -432,6 +438,12 @@ void MainWindow::onLlmResponseReceived(const QString &response,
     testPlanTextEdit->setPlainText(response);
   } else if (type == "code") {
     generatedCodeTextEdit->setPlainText(response);
+    if (currentSimState == SimState::WaitingForLlm) {
+      onRunSimulationClicked();
+    }
+  } else if (type == "report") {
+    finalReportTextEdit->setPlainText(response);
+    currentSimState = SimState::Idle;
   }
 }
 

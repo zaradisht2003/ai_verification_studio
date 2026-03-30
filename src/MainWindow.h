@@ -34,7 +34,7 @@ private slots:
   void onSimulationErrorReceived(const QString &error);
   void onScpFinished(int exitCode);
   void onSshFinished(int exitCode);
-  void handleSimulationLoop();
+  void handleSimulationLoop(int exitCode);
 
 private:
   void setupUi();
@@ -52,6 +52,7 @@ private:
   QTextEdit *testPlanTextEdit;
   QTextEdit *generatedCodeTextEdit;
   QTextEdit *simulationLogTextEdit;
+  QTextEdit *finalReportTextEdit;
 
   QTabWidget *mainTabWidget;
   QPushButton *btnGeneratePlan;
@@ -64,7 +65,6 @@ private:
   QLineEdit *sshHostInput;
   QLineEdit *sshKeyInput;
   QLineEdit *remoteDirInput;
-  QSpinBox *coverageGoalInput;
   QCheckBox *autoImproveCheckbox;
 
   // Core Logic
@@ -75,7 +75,7 @@ private:
   int lastUploadLogPercent = -1;
 
   // Feedback Loop State
-  enum class SimState { Idle, RunningSimulation, WaitingForLlm };
+  enum class SimState { Idle, RunningSimulation, WaitingForLlm, WaitingForReport };
   SimState currentSimState = SimState::Idle;
   QString lastGeneratedCode;
 };

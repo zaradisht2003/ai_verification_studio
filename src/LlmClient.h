@@ -13,7 +13,7 @@ class LlmClient : public QObject {
   Q_OBJECT
 
 public:
-  enum class Provider { OpenRouter, Gemini, Codestral };
+  enum class Provider { OpenRouter, Gemini, Codestral, OpenAI, Groq };
 
   explicit LlmClient(QObject *parent = nullptr);
   ~LlmClient();
@@ -29,10 +29,11 @@ public:
   // Sends a test plan to generate SystemVerilog code
   void generateSystemVerilog(const QString &testPlanJson);
 
-  // Sends current code and simulation logs to improve the testbench for
-  // coverage
-  void improveSystemVerilog(const QString &currentCode, const QString &simLogs,
-                            int currentCov, int targetCov);
+  // Sends current code and simulation logs to improve the testbench and fix errors
+  void improveSystemVerilog(const QString &currentCode, const QString &simLogs);
+
+  // Sends current code and simulation logs to generate a final design report
+  void generateDesignReport(const QString &currentCode, const QString &simLogs);
 
 signals:
   void responseReceived(const QString &response, const QString &type);
@@ -69,6 +70,20 @@ private:
                                   const QString &pdfFilePath);
   static QByteArray buildCodestralTextPayload(const QString &systemInstruction,
                                               const QString &prompt);
+
+  static QByteArray
+  buildOpenAiMultimodalPayload(const QString &systemInstruction,
+                               const QString &prompt,
+                               const QString &pdfFilePath);
+  static QByteArray buildOpenAiTextPayload(const QString &systemInstruction,
+                                           const QString &prompt);
+
+  static QByteArray
+  buildGroqMultimodalPayload(const QString &systemInstruction,
+                             const QString &prompt,
+                             const QString &pdfFilePath);
+  static QByteArray buildGroqTextPayload(const QString &systemInstruction,
+                                         const QString &prompt);
 
   QString apiKey;
   Provider currentProvider = Provider::OpenRouter;

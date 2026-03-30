@@ -1,8 +1,8 @@
 {
 	"AUTOGEN_COMMAND_LINE_LENGTH_MAX" : 32000,
-	"BUILD_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen",
-	"CMAKE_BINARY_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3",
-	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3",
+	"BUILD_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build",
 	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio",
 	"CMAKE_EXECUTABLE" : "C:/Qt/Tools/CMake_64/bin/cmake.exe",
 	"CMAKE_LIST_FILES" : 
@@ -10,8 +10,7 @@
 		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/CMakeLists.txt",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineSystem.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeSystem.cmake.in",
-		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeSystem.cmake",
-		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeNinjaFindMake.cmake",
+		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeSystem.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineCXXCompiler.cmake",
@@ -64,7 +63,7 @@
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeFindBinUtils.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Compiler/GNU-FindBinUtils.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeCXXCompiler.cmake.in",
-		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
+		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake",
@@ -79,7 +78,7 @@
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineRCCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeRCCompiler.cmake.in",
-		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeRCCompiler.cmake",
+		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeRCCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeRCInformation.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeTestRCCompiler.cmake",
@@ -96,7 +95,7 @@
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeDetermineCompilerSupport.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Internal/FeatureTesting.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeCXXCompiler.cmake.in",
-		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
+		"C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake",
 		"C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6/Qt6ConfigVersion.cmake",
 		"C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6/Qt6ConfigVersionImpl.cmake",
@@ -365,7 +364,7 @@
 	],
 	"CMAKE_SOURCE_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio",
 	"CROSS_CONFIG" : false,
-	"DEP_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/deps",
+	"DEP_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/deps",
 	"DEP_FILE_RULE_NAME" : "ai_verif_studio_autogen/timestamp",
 	"HEADERS" : 
 	[
@@ -389,8 +388,8 @@
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/include",
-	"MOC_COMPILATION_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/include",
+	"MOC_COMPILATION_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"MINGW_HAS_SECURE_API=1",
@@ -444,24 +443,24 @@
 	"MOC_PATH_PREFIX" : false,
 	"MOC_PREDEFS_CMD" : 
 	[
-		"C:/Qt/Tools/mingw1310_64/bin/c++.exe",
+		"C:/Qt/Tools/mingw1310_64/bin/g++.exe",
 		"-std=gnu++17",
 		"-dM",
 		"-E",
 		"-c",
 		"C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 14,
-	"PARSE_CACHE_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/ai_verif_studio_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/ai_verif_studio_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "C:/Qt/6.10.2/mingw_64/bin/moc.exe",
 	"QT_UIC_EXECUTABLE" : "C:/Qt/6.10.2/mingw_64/bin/uic.exe",
 	"QT_VERSION_MAJOR" : 6,
 	"QT_VERSION_MINOR" : 10,
-	"SETTINGS_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/ai_verif_studio_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/ai_verif_studio_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[

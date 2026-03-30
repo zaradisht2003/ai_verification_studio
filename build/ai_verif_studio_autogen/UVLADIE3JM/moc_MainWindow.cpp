@@ -111,7 +111,9 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
             { QMetaType::Int, 22 },
         }}),
         // Slot 'handleSimulationLoop'
-        QtMocHelpers::SlotData<void()>(24, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void(int)>(24, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 22 },
+        }}),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -148,7 +150,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 10: _t->onSimulationErrorReceived((*reinterpret_cast<std::add_pointer_t<QString>>(_a[1]))); break;
         case 11: _t->onScpFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
         case 12: _t->onSshFinished((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
-        case 13: _t->handleSimulationLoop(); break;
+        case 13: _t->handleSimulationLoop((*reinterpret_cast<std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }

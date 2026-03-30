@@ -1,0 +1,8 @@
+﻿ninja: Entering directory `build'
+[1/1] Linking CXX executable ai_verif_studio.exe
+FAILED: ai_verif_studio.exe 
+C:\WINDOWS\system32\cmd.exe /C "cd . && C:\Qt\Tools\mingw1310_64\bin\g++.exe  -mwindows CMakeFiles/ai_verif_studio.dir/ai_verif_studio_autogen/mocs_compilation.cpp.obj CMakeFiles/ai_verif_studio.dir/src/LlmClient.cpp.obj CMakeFiles/ai_verif_studio.dir/src/MainWindow.cpp.obj CMakeFiles/ai_verif_studio.dir/src/SimulationRunner.cpp.obj CMakeFiles/ai_verif_studio.dir/src/main.cpp.obj -o ai_verif_studio.exe -Wl,--out-implib,libai_verif_studio.dll.a -Wl,--major-image-version,0,--minor-image-version,0  C:/Qt/6.10.2/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.10.2/mingw_64/lib/libQt6Network.a  C:/Qt/6.10.2/mingw_64/lib/libQt6Concurrent.a  C:/Qt/6.10.2/mingw_64/lib/libQt6Gui.a  -ld3d11  -ldxgi  -ldxguid  -ld3d12  -lws2_32  C:/Qt/6.10.2/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.10.2/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Dell\.gemini\antigravity\scratch\ai_verification_studio\build && C:\Qt\6.10.2\mingw_64\bin\windeployqt.exe --no-opengl-sw --no-translations "C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio.exe"""
+C:/Qt/Tools/mingw1310_64/bin/../lib/gcc/x86_64-w64-mingw32/13.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: cannot open output file ai_verif_studio.exe: Permission denied
+
+collect2.exe: error: ld returned 1 exit status
+ninja: build stopped: subcommand failed.

@@ -602,7 +602,6 @@ ai_verif_studio_autogen/timestamp: \
 	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake \
 	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake \
 	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake \
-	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeNinjaFindMake.cmake \
 	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeParseImplicitIncludeInfo.cmake \
 	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeParseImplicitLinkInfo.cmake \
 	C:/Qt/Tools/CMake_64/share/cmake-3.30/Modules/CMakeParseLibraryArchitecture.cmake \
@@ -1031,10 +1030,10 @@ ai_verif_studio_autogen/timestamp: \
 	C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h \
 	C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/CMakeLists.txt \
-	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake \
-	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeRCCompiler.cmake \
-	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/CMakeFiles/3.30.5/CMakeSystem.cmake \
-	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h \
+	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeCXXCompiler.cmake \
+	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeRCCompiler.cmake \
+	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/CMakeFiles/3.30.5/CMakeSystem.cmake \
+	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/moc_predefs.h \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.cpp \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h \
 	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.cpp \

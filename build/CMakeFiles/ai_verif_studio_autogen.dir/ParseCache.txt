@@ -686,7 +686,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h
- mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h
+ mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/moc_predefs.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.h
  mmc:Q_OBJECT
@@ -1443,7 +1443,7 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wctype.h
- mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h
+ mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/moc_predefs.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.h
@@ -1766,9 +1766,9 @@ C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationR
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/time.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/vadefs.h
  mdp:C:/Qt/Tools/mingw1310_64/x86_64-w64-mingw32/include/wchar.h
- mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build3/ai_verif_studio_autogen/moc_predefs.h
+ mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/moc_predefs.h
  mdp:C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.h
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/LlmClient.cpp
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/MainWindow.cpp
-C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/main.cpp
 C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/SimulationRunner.cpp
+C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/src/main.cpp
