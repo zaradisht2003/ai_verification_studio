@@ -13,13 +13,13 @@ class LlmClient : public QObject {
   Q_OBJECT
 
 public:
-  enum class Provider { OpenRouter, Gemini, Codestral, OpenAI, Groq };
+  enum class Model { Gemini2_5_Flash, Gemini2_5_Flash_Lite, Gemini3, Gemini3_1_Flash_Lite };
 
   explicit LlmClient(QObject *parent = nullptr);
   ~LlmClient();
 
   void setApiKey(const QString &key);
-  void setProvider(Provider p);
+  void setModel(Model m);
 
   // Sends a prompt to generate a JSON test plan
   void generateTestPlan(const QString &specificationText);
@@ -30,10 +30,10 @@ public:
   void generateSystemVerilog(const QString &testPlanJson);
 
   // Sends current code and simulation logs to improve the testbench and fix errors
-  void improveSystemVerilog(const QString &currentCode, const QString &simLogs);
+  void improveSystemVerilog(const QString &currentCode, const QString &simLogs, const QString &additionalPrompt = "");
 
   // Sends current code and simulation logs to generate a final design report
-  void generateDesignReport(const QString &currentCode, const QString &simLogs);
+  void generateDesignReport(const QString &currentCode, const QString &simLogs, const QString &additionalPrompt = "");
 
 signals:
   void responseReceived(const QString &response, const QString &type);
@@ -51,42 +51,14 @@ private:
                    const QString &responseType);
 
   static QByteArray
-  buildOpenRouterMultimodalPayload(const QString &systemInstruction,
-                                   const QString &prompt,
-                                   const QString &pdfFilePath);
-  static QByteArray buildOpenRouterTextPayload(const QString &systemInstruction,
-                                               const QString &prompt);
-
-  static QByteArray
   buildGeminiMultimodalPayload(const QString &systemInstruction,
                                const QString &prompt,
                                const QString &pdfFilePath);
   static QByteArray buildGeminiTextPayload(const QString &systemInstruction,
                                            const QString &prompt);
 
-  static QByteArray
-  buildCodestralMultimodalPayload(const QString &systemInstruction,
-                                  const QString &prompt,
-                                  const QString &pdfFilePath);
-  static QByteArray buildCodestralTextPayload(const QString &systemInstruction,
-                                              const QString &prompt);
-
-  static QByteArray
-  buildOpenAiMultimodalPayload(const QString &systemInstruction,
-                               const QString &prompt,
-                               const QString &pdfFilePath);
-  static QByteArray buildOpenAiTextPayload(const QString &systemInstruction,
-                                           const QString &prompt);
-
-  static QByteArray
-  buildGroqMultimodalPayload(const QString &systemInstruction,
-                             const QString &prompt,
-                             const QString &pdfFilePath);
-  static QByteArray buildGroqTextPayload(const QString &systemInstruction,
-                                         const QString &prompt);
-
   QString apiKey;
-  Provider currentProvider = Provider::OpenRouter;
+  Model currentModel = Model::Gemini3;
   QNetworkAccessManager *manager;
   QString currentResponseType;
   QNetworkRequest currentRequest;

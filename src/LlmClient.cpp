@@ -32,7 +32,7 @@ LlmClient::~LlmClient() {
 
 void LlmClient::setApiKey(const QString &key) { apiKey = key; }
 
-void LlmClient::setProvider(LlmClient::Provider p) { currentProvider = p; }
+void LlmClient::setModel(LlmClient::Model m) { currentModel = m; }
 
 void LlmClient::generateTestPlan(const QString &specificationText) {
   QString systemInstruction =
@@ -73,39 +73,20 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
   QUrl url;
   QNetworkRequest request;
 
-  if (currentProvider == LlmClient::Provider::Groq) {
-    url = QUrl("https://api.groq.com/openai/v1/chat/completions");
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization",
-                         QString("Bearer %1").arg(apiKey).toUtf8());
-  } else if (currentProvider == LlmClient::Provider::OpenAI) {
-    url = QUrl("https://api.openai.com/v1/chat/completions");
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization",
-                         QString("Bearer %1").arg(apiKey).toUtf8());
-  } else if (currentProvider == LlmClient::Provider::OpenRouter) {
-    url = QUrl("https://openrouter.ai/api/v1/chat/completions");
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization",
-                         QString("Bearer %1").arg(apiKey).toUtf8());
-    request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
-    request.setRawHeader("X-Title", "AI Verification Studio");
-  } else if (currentProvider == LlmClient::Provider::Codestral) {
-    url = QUrl("https://api.mistral.ai/v1/chat/completions");
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization",
-                         QString("Bearer %1").arg(apiKey).toUtf8());
-  } else {
-    url = QUrl(QString("https://generativelanguage.googleapis.com/v1beta/"
-                       "models/gemini-3-flash-preview:generateContent?key=%1")
-                   .arg(apiKey));
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  QString modelName = "gemini-3-flash-preview";
+  if (currentModel == Model::Gemini2_5_Flash) {
+      modelName = "gemini-2.5-flash";
+  } else if (currentModel == Model::Gemini2_5_Flash_Lite) {
+      modelName = "gemini-2.5-flash-lite";
+  } else if (currentModel == Model::Gemini3_1_Flash_Lite) {
+      modelName = "gemini-3-1-flash-lite-preview";
   }
+
+  QString apiVersion = modelName.contains("gemini-3") ? "v1alpha" : "v1beta";
+  url = QUrl(QString("https://generativelanguage.googleapis.com/%1/models/%2:generateContent?key=%3")
+                 .arg(apiVersion).arg(modelName).arg(apiKey));
+  request.setUrl(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
   currentRequest = request;
 
@@ -121,88 +102,11 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
             watcher->deleteLater();
           });
 
-  QFuture<QByteArray> future;
-  if (currentProvider == Provider::Groq) {
-    future = QtConcurrent::run(LlmClient::buildGroqMultimodalPayload,
+  QFuture<QByteArray> future = QtConcurrent::run(LlmClient::buildGeminiMultimodalPayload,
                                systemInstruction, prompt, pdfFilePath);
-  } else if (currentProvider == Provider::OpenAI) {
-    future = QtConcurrent::run(LlmClient::buildOpenAiMultimodalPayload,
-                               systemInstruction, prompt, pdfFilePath);
-  } else if (currentProvider == Provider::OpenRouter) {
-    future = QtConcurrent::run(LlmClient::buildOpenRouterMultimodalPayload,
-                               systemInstruction, prompt, pdfFilePath);
-  } else if (currentProvider == Provider::Codestral) {
-    future = QtConcurrent::run(LlmClient::buildCodestralMultimodalPayload,
-                               systemInstruction, prompt, pdfFilePath);
-  } else {
-    future = QtConcurrent::run(LlmClient::buildGeminiMultimodalPayload,
-                               systemInstruction, prompt, pdfFilePath);
-  }
   watcher->setFuture(future);
 }
 
-QByteArray
-LlmClient::buildOpenRouterMultimodalPayload(const QString &systemInstruction,
-                                            const QString &prompt,
-                                            const QString &pdfFilePath) {
-  QFile file(pdfFilePath);
-  if (!file.open(QIODevice::ReadOnly)) {
-    return QByteArray();
-  }
-
-  QByteArray fileData = file.readAll();
-  QString base64Data = fileData.toBase64();
-  file.close();
-
-  QJsonObject requestBody;
-
-  // Explicitly ask OpenRouter for Gemini 2.5 Flash as it supports PDF over
-  // base64
-  requestBody["model"] = "google/gemini-2.5-flash";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  requestBody["max_tokens"] = 8192;
-
-  QJsonArray messagesArray;
-
-  // System message
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  // User message with multimodal inline data
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-
-  QJsonArray contentArray;
-
-  // The text prompt part
-  QJsonObject textPart;
-  textPart["type"] = "text";
-  textPart["text"] = prompt;
-  contentArray.append(textPart);
-
-  // The inline PDF part (formatted for OpenAI image_url standard)
-  QJsonObject imagePart;
-  imagePart["type"] = "image_url";
-  QJsonObject imageUrlObj;
-  // Construct the data URI for the PDF
-  imageUrlObj["url"] = "data:application/pdf;base64," + base64Data;
-  imagePart["image_url"] = imageUrlObj;
-  contentArray.append(imagePart);
-
-  userMessage["content"] = contentArray;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
 
 QByteArray
 LlmClient::buildGeminiMultimodalPayload(const QString &systemInstruction,
@@ -276,7 +180,8 @@ void LlmClient::generateSystemVerilog(const QString &testPlanJson) {
 }
 
 void LlmClient::improveSystemVerilog(const QString &currentCode,
-                                     const QString &simLogs) {
+                                     const QString &simLogs,
+                                     const QString &additionalPrompt) {
   QString systemInstruction =
       "You are a senior SystemVerilog verification engineer. "
       "You will be provided with the current testbench code and the simulation "
@@ -292,11 +197,16 @@ void LlmClient::improveSystemVerilog(const QString &currentCode,
           .arg(simLogs)
           .arg(currentCode);
 
+  if (!additionalPrompt.isEmpty()) {
+      prompt += "\n\nUser Comments:\n" + additionalPrompt;
+  }
+
   sendRequest(prompt, systemInstruction, "code");
 }
 
 void LlmClient::generateDesignReport(const QString &currentCode,
-                                     const QString &simLogs) {
+                                     const QString &simLogs,
+                                     const QString &additionalPrompt) {
   QString systemInstruction =
       "You are a hardware verification expert. "
       "Analyze the provided testbench code and the successful simulation logs. "
@@ -308,6 +218,10 @@ void LlmClient::generateDesignReport(const QString &currentCode,
       QString("Simulation Logs:\n%1\n\nCurrent Testbench Code:\n%2")
           .arg(simLogs)
           .arg(currentCode);
+
+  if (!additionalPrompt.isEmpty()) {
+      prompt += "\n\nUser Comments:\n" + additionalPrompt;
+  }
 
   sendRequest(prompt, systemInstruction, "report");
 }
@@ -325,27 +239,20 @@ void LlmClient::sendRequest(const QString &prompt,
   QUrl url;
   QNetworkRequest request;
 
-  if (currentProvider == LlmClient::Provider::OpenRouter) {
-    url = QUrl("https://openrouter.ai/api/v1/chat/completions");
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization",
-                         QString("Bearer %1").arg(apiKey).toUtf8());
-    request.setRawHeader("HTTP-Referer", "http://ai-verification-studio.local");
-    request.setRawHeader("X-Title", "AI Verification Studio");
-  } else if (currentProvider == LlmClient::Provider::Codestral) {
-    url = QUrl("https://api.mistral.ai/v1/chat/completions");
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-    request.setRawHeader("Authorization",
-                         QString("Bearer %1").arg(apiKey).toUtf8());
-  } else {
-    url = QUrl(QString("https://generativelanguage.googleapis.com/v1beta/"
-                       "models/gemini-3-flash-preview:generateContent?key=%1")
-                   .arg(apiKey));
-    request.setUrl(url);
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+  QString modelName = "gemini-3-flash-preview";
+  if (currentModel == Model::Gemini2_5_Flash) {
+      modelName = "gemini-2.5-flash";
+  } else if (currentModel == Model::Gemini2_5_Flash_Lite) {
+      modelName = "gemini-2.5-flash-lite";
+  } else if (currentModel == Model::Gemini3_1_Flash_Lite) {
+      modelName = "gemini-3-1-flash-lite-preview";
   }
+
+  QString apiVersion = modelName.contains("gemini-3") ? "v1alpha" : "v1beta";
+  url = QUrl(QString("https://generativelanguage.googleapis.com/%1/models/%2:generateContent?key=%3")
+                 .arg(apiVersion).arg(modelName).arg(apiKey));
+  request.setUrl(url);
+  request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
   currentRequest = request;
 
@@ -357,23 +264,8 @@ void LlmClient::sendRequest(const QString &prompt,
             watcher->deleteLater();
           });
 
-  QFuture<QByteArray> future;
-  if (currentProvider == LlmClient::Provider::Groq) {
-    future = QtConcurrent::run(LlmClient::buildGroqTextPayload,
-                               systemInstruction, prompt);
-  } else if (currentProvider == LlmClient::Provider::OpenAI) {
-    future = QtConcurrent::run(LlmClient::buildOpenAiTextPayload,
-                               systemInstruction, prompt);
-  } else if (currentProvider == LlmClient::Provider::OpenRouter) {
-    future = QtConcurrent::run(LlmClient::buildOpenRouterTextPayload,
-                               systemInstruction, prompt);
-  } else if (currentProvider == LlmClient::Provider::Codestral) {
-    future = QtConcurrent::run(LlmClient::buildCodestralTextPayload,
-                               systemInstruction, prompt);
-  } else {
-    future = QtConcurrent::run(LlmClient::buildGeminiTextPayload,
-                               systemInstruction, prompt);
-  }
+  QFuture<QByteArray> future = QtConcurrent::run(LlmClient::buildGeminiTextPayload,
+                             systemInstruction, prompt);
   watcher->setFuture(future);
 }
 
@@ -459,22 +351,6 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
         bool foundCompleteText = false;
         QString textResponse;
 
-        if (currentProvider == LlmClient::Provider::Groq ||
-            currentProvider == LlmClient::Provider::OpenAI ||
-            currentProvider == LlmClient::Provider::OpenRouter ||
-            currentProvider == LlmClient::Provider::Codestral) {
-          if (jsonObject.contains("choices")) {
-            QJsonArray choices = jsonObject["choices"].toArray();
-            if (!choices.isEmpty()) {
-              QJsonObject firstChoice = choices.first().toObject();
-              if (firstChoice.contains("message")) {
-                textResponse =
-                    firstChoice["message"].toObject()["content"].toString();
-                foundCompleteText = true;
-              }
-            }
-          }
-        } else if (currentProvider == LlmClient::Provider::Gemini) {
           if (jsonObject.contains("candidates")) {
             QJsonArray candidates = jsonObject["candidates"].toArray();
             if (!candidates.isEmpty()) {
@@ -491,7 +367,6 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
               }
             }
           }
-        }
 
         if (foundCompleteText) {
           emit diagnosticLog("Valid complete JSON captured from live stream! "
@@ -521,38 +396,6 @@ void LlmClient::onPayloadReady(const QByteArray &payload) {
           });
 }
 
-QByteArray
-LlmClient::buildOpenRouterTextPayload(const QString &systemInstruction,
-                                      const QString &prompt) {
-  QJsonObject requestBody;
-
-  // Use a fast/default model on OpenRouter for pure text (e.g., Llama 3 or
-  // Gemini)
-  requestBody["model"] = "openrouter/auto";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  requestBody["max_tokens"] = 8192;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  userMessage["content"] = prompt;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
 
 QByteArray LlmClient::buildGeminiTextPayload(const QString &systemInstruction,
                                              const QString &prompt) {
@@ -701,35 +544,18 @@ void LlmClient::onReplyFinished() {
   bool parsedSuccessfully = false;
   QString textResponse;
 
-  if (currentProvider == LlmClient::Provider::Groq ||
-      currentProvider == LlmClient::Provider::OpenAI ||
-      currentProvider == LlmClient::Provider::OpenRouter ||
-      currentProvider == LlmClient::Provider::Codestral) {
-    if (jsonObject.contains("choices") && jsonObject["choices"].isArray()) {
-      QJsonArray choices = jsonObject["choices"].toArray();
-      if (!choices.isEmpty()) {
-        QJsonObject firstChoice = choices.first().toObject();
-        if (firstChoice.contains("message")) {
-          QJsonObject message = firstChoice["message"].toObject();
-          textResponse = message["content"].toString();
-          parsedSuccessfully = true;
-        }
-      }
-    }
-  } else if (currentProvider == LlmClient::Provider::Gemini) {
-    if (jsonObject.contains("candidates") &&
-        jsonObject["candidates"].isArray()) {
-      QJsonArray candidates = jsonObject["candidates"].toArray();
-      if (!candidates.isEmpty()) {
-        QJsonObject firstCandidate = candidates.first().toObject();
-        if (firstCandidate.contains("content")) {
-          QJsonObject content = firstCandidate["content"].toObject();
-          if (content.contains("parts") && content["parts"].isArray()) {
-            QJsonArray parts = content["parts"].toArray();
-            if (!parts.isEmpty()) {
-              textResponse = parts.first().toObject()["text"].toString();
-              parsedSuccessfully = true;
-            }
+  if (jsonObject.contains("candidates") &&
+      jsonObject["candidates"].isArray()) {
+    QJsonArray candidates = jsonObject["candidates"].toArray();
+    if (!candidates.isEmpty()) {
+      QJsonObject firstCandidate = candidates.first().toObject();
+      if (firstCandidate.contains("content")) {
+        QJsonObject content = firstCandidate["content"].toObject();
+        if (content.contains("parts") && content["parts"].isArray()) {
+          QJsonArray parts = content["parts"].toArray();
+          if (!parts.isEmpty()) {
+            textResponse = parts.first().toObject()["text"].toString();
+            parsedSuccessfully = true;
           }
         }
       }
@@ -754,246 +580,3 @@ void LlmClient::onReplyFinished() {
   reply->deleteLater();
 }
 
-QByteArray
-LlmClient::buildCodestralTextPayload(const QString &systemInstruction,
-                                     const QString &prompt) {
-  QJsonObject requestBody;
-  requestBody["model"] = "codestral-latest";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  requestBody["max_tokens"] = 8192;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  userMessage["content"] = prompt;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
-
-QByteArray
-LlmClient::buildCodestralMultimodalPayload(const QString &systemInstruction,
-                                           const QString &prompt,
-                                           const QString &pdfFilePath) {
-  QFile file(pdfFilePath);
-  if (!file.open(QIODevice::ReadOnly)) {
-    return QByteArray();
-  }
-
-  QByteArray fileData = file.readAll();
-  QString base64Data = fileData.toBase64();
-  file.close();
-
-  QJsonObject requestBody;
-  requestBody["model"] = "codestral-latest";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  requestBody["max_tokens"] = 8192;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  QJsonArray contentArray;
-
-  QJsonObject textPart;
-  textPart["type"] = "text";
-  textPart["text"] = prompt;
-  contentArray.append(textPart);
-
-  QJsonObject imagePart;
-  imagePart["type"] = "image_url";
-  QJsonObject imageUrlObj;
-  imageUrlObj["url"] = "data:application/pdf;base64," + base64Data;
-  imagePart["image_url"] = imageUrlObj;
-  contentArray.append(imagePart);
-
-  userMessage["content"] = contentArray;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
-
-QByteArray
-LlmClient::buildOpenAiTextPayload(const QString &systemInstruction,
-                                  const QString &prompt) {
-  QJsonObject requestBody;
-  requestBody["model"] = "gpt-4o";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  userMessage["content"] = prompt;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
-
-QByteArray
-LlmClient::buildOpenAiMultimodalPayload(const QString &systemInstruction,
-                                        const QString &prompt,
-                                        const QString &pdfFilePath) {
-  QFile file(pdfFilePath);
-  if (!file.open(QIODevice::ReadOnly)) {
-    return QByteArray();
-  }
-
-  QByteArray fileData = file.readAll();
-  QString base64Data = fileData.toBase64();
-  file.close();
-
-  QJsonObject requestBody;
-  requestBody["model"] = "gpt-4o";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  QJsonArray contentArray;
-
-  QJsonObject textPart;
-  textPart["type"] = "text";
-  textPart["text"] = prompt;
-  contentArray.append(textPart);
-
-  QJsonObject imagePart;
-  imagePart["type"] = "image_url";
-  QJsonObject imageUrlObj;
-  imageUrlObj["url"] = "data:application/pdf;base64," + base64Data;
-  imagePart["image_url"] = imageUrlObj;
-  contentArray.append(imagePart);
-
-  userMessage["content"] = contentArray;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
-
-QByteArray
-LlmClient::buildGroqTextPayload(const QString &systemInstruction,
-                                const QString &prompt) {
-  QJsonObject requestBody;
-  requestBody["model"] = "llama-3.3-70b-versatile";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  userMessage["content"] = prompt;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}
-
-QByteArray
-LlmClient::buildGroqMultimodalPayload(const QString &systemInstruction,
-                                      const QString &prompt,
-                                      const QString &pdfFilePath) {
-  QFile file(pdfFilePath);
-  if (!file.open(QIODevice::ReadOnly)) {
-    return QByteArray();
-  }
-
-  QByteArray fileData = file.readAll();
-  QString base64Data = fileData.toBase64();
-  file.close();
-
-  QJsonObject requestBody;
-  requestBody["model"] = "llama-3.2-90b-vision-preview";
-
-  QJsonObject responseFormatObj;
-  responseFormatObj["type"] = "json_object";
-  requestBody["response_format"] = responseFormatObj;
-
-  QJsonArray messagesArray;
-
-  QJsonObject systemMessage;
-  systemMessage["role"] = "system";
-  systemMessage["content"] = systemInstruction;
-  messagesArray.append(systemMessage);
-
-  QJsonObject userMessage;
-  userMessage["role"] = "user";
-  QJsonArray contentArray;
-
-  QJsonObject textPart;
-  textPart["type"] = "text";
-  textPart["text"] = prompt;
-  contentArray.append(textPart);
-
-  QJsonObject imagePart;
-  imagePart["type"] = "image_url";
-  QJsonObject imageUrlObj;
-  imageUrlObj["url"] = "data:application/pdf;base64," + base64Data;
-  imagePart["image_url"] = imageUrlObj;
-  contentArray.append(imagePart);
-
-  userMessage["content"] = contentArray;
-  messagesArray.append(userMessage);
-
-  requestBody["messages"] = messagesArray;
-
-  QJsonDocument doc(requestBody);
-  return doc.toJson(QJsonDocument::Compact);
-}

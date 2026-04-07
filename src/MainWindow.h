@@ -12,6 +12,8 @@
 #include <QSpinBox>
 #include <QTabWidget>
 #include <QTextEdit>
+#include <QCloseEvent>
+#include <QSettings>
 
 class MainWindow : public QMainWindow {
   Q_OBJECT
@@ -19,6 +21,9 @@ class MainWindow : public QMainWindow {
 public:
   MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
+
+protected:
+  void closeEvent(QCloseEvent *event) override;
 
 private slots:
   void onSelectPdfClicked();
@@ -43,11 +48,15 @@ private:
   void createStatusBar();
   void configureSettingsWidget();
 
+  void loadSettings();
+  void saveSettings();
+
   // UI Elements
   QTextEdit *specInputTextEdit;
   QPushButton *btnSelectPdf;
   QLabel *pdfPathLabel;
   QString selectedPdfPath;
+  QTextEdit *llmCommentsTextEdit;
 
   QTextEdit *testPlanTextEdit;
   QTextEdit *generatedCodeTextEdit;
@@ -60,7 +69,7 @@ private:
   QPushButton *btnRunSimulation;
 
   // Config inputs
-  QComboBox *llmProviderCombo;
+  QComboBox *llmModelCombo;
   QLineEdit *llmApiKeyInput;
   QLineEdit *sshHostInput;
   QLineEdit *sshKeyInput;

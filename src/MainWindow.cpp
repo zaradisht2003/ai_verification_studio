@@ -13,6 +13,8 @@
 #include <QTimer>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <QSettings>
+#include <QCloseEvent>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), llmClient(new LlmClient(this)),
@@ -42,9 +44,39 @@ MainWindow::MainWindow(QWidget *parent)
           &MainWindow::onScpFinished);
   connect(simulationRunner, &SimulationRunner::sshFinished, this,
           &MainWindow::onSshFinished);
+
+  loadSettings();
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::closeEvent(QCloseEvent *event) {
+  saveSettings();
+  QMainWindow::closeEvent(event);
+}
+
+void MainWindow::loadSettings() {
+  QSettings settings("AIVerificationStudio", "Client");
+  llmApiKeyInput->setText(settings.value("apiKey", "").toString());
+  sshHostInput->setText(settings.value("sshHost", "").toString());
+  sshKeyInput->setText(settings.value("sshKey", "").toString());
+  remoteDirInput->setText(settings.value("remoteDir", "").toString());
+  autoImproveCheckbox->setChecked(settings.value("autoImprove", true).toBool());
+  int modelIdx = settings.value("modelIndex", 0).toInt();
+  if (modelIdx >= 0 && modelIdx < llmModelCombo->count()) {
+    llmModelCombo->setCurrentIndex(modelIdx);
+  }
+}
+
+void MainWindow::saveSettings() {
+  QSettings settings("AIVerificationStudio", "Client");
+  settings.setValue("apiKey", llmApiKeyInput->text());
+  settings.setValue("sshHost", sshHostInput->text());
+  settings.setValue("sshKey", sshKeyInput->text());
+  settings.setValue("remoteDir", remoteDirInput->text());
+  settings.setValue("autoImprove", autoImproveCheckbox->isChecked());
+  settings.setValue("modelIndex", llmModelCombo->currentIndex());
+}
 
 void MainWindow::setupUi() {
   resize(1200, 800);
@@ -100,6 +132,13 @@ void MainWindow::createCentralWidget() {
   specInputTextEdit->setFont(monoFont);
   leftLayout->addWidget(specInputTextEdit);
 
+  leftLayout->addWidget(new QLabel("Optional comments for the LLM:", this));
+  llmCommentsTextEdit = new QTextEdit(this);
+  llmCommentsTextEdit->setPlaceholderText("e.g. Focus on edge cases for reset...");
+  llmCommentsTextEdit->setFont(monoFont);
+  llmCommentsTextEdit->setMaximumHeight(100);
+  leftLayout->addWidget(llmCommentsTextEdit);
+
   // Right Pane: Output Tabs & Config
   QWidget *rightWidget = new QWidget(this);
   QVBoxLayout *rightLayout = new QVBoxLayout(rightWidget);
@@ -108,19 +147,11 @@ void MainWindow::createCentralWidget() {
   QGroupBox *configGroup = new QGroupBox("Configuration", this);
   QFormLayout *configLayout = new QFormLayout(configGroup);
 
-  llmProviderCombo = new QComboBox(this);
-  llmProviderCombo->addItem(
-      "OpenRouter",
-      QVariant::fromValue(static_cast<int>(LlmClient::Provider::OpenRouter)));
-  llmProviderCombo->addItem(
-      "Google Gemini",
-      QVariant::fromValue(static_cast<int>(LlmClient::Provider::Gemini)));
-  llmProviderCombo->addItem("Codestral", QVariant::fromValue(static_cast<int>(
-                                             LlmClient::Provider::Codestral)));
-  llmProviderCombo->addItem("OpenAI", QVariant::fromValue(static_cast<int>(
-                                          LlmClient::Provider::OpenAI)));
-  llmProviderCombo->addItem("Groq", QVariant::fromValue(static_cast<int>(
-                                        LlmClient::Provider::Groq)));
+  llmModelCombo = new QComboBox(this);
+  llmModelCombo->addItem("Gemini 2.5 Flash", QVariant::fromValue(static_cast<int>(LlmClient::Model::Gemini2_5_Flash)));
+  llmModelCombo->addItem("Gemini 2.5 Flash Lite", QVariant::fromValue(static_cast<int>(LlmClient::Model::Gemini2_5_Flash_Lite)));
+  llmModelCombo->addItem("Gemini 3", QVariant::fromValue(static_cast<int>(LlmClient::Model::Gemini3)));
+  llmModelCombo->addItem("Gemini 3.1 Flash Lite", QVariant::fromValue(static_cast<int>(LlmClient::Model::Gemini3_1_Flash_Lite)));
 
   llmApiKeyInput = new QLineEdit(this);
   llmApiKeyInput->setEchoMode(QLineEdit::Password);
@@ -141,21 +172,24 @@ void MainWindow::createCentralWidget() {
       new QCheckBox("Auto-Improve Testbench to reach Goal", this);
   autoImproveCheckbox->setChecked(true);
 
-  configLayout->addRow("LLM Provider:", llmProviderCombo);
+  configLayout->addRow("LLM Model:", llmModelCombo);
   configLayout->addRow("API Key:", llmApiKeyInput);
   configLayout->addRow("SSH Target:", sshHostInput);
   configLayout->addRow("SSH Key Path:", sshKeyInput);
   configLayout->addRow("Remote RTL Dir:", remoteDirInput);
   configLayout->addRow("", autoImproveCheckbox);
 
-  rightLayout->addWidget(configGroup);
+  QWidget *settingsTab = new QWidget(this);
+  QVBoxLayout *settingsTabLayout = new QVBoxLayout(settingsTab);
+  settingsTabLayout->addWidget(configGroup);
+  settingsTabLayout->addStretch();
 
   // Tabs
   mainTabWidget = new QTabWidget(this);
 
   testPlanTextEdit = new QTextEdit(this);
   testPlanTextEdit->setFont(monoFont);
-  testPlanTextEdit->setReadOnly(true);
+  testPlanTextEdit->setReadOnly(false);
 
   generatedCodeTextEdit = new QTextEdit(this);
   generatedCodeTextEdit->setFont(monoFont);
@@ -174,6 +208,7 @@ void MainWindow::createCentralWidget() {
   mainTabWidget->addTab(generatedCodeTextEdit, "SystemVerilog Code");
   mainTabWidget->addTab(simulationLogTextEdit, "Simulation Logs");
   mainTabWidget->addTab(finalReportTextEdit, "Design Report");
+  mainTabWidget->addTab(settingsTab, "Settings");
 
   rightLayout->addWidget(mainTabWidget);
 
@@ -226,10 +261,15 @@ void MainWindow::onGeneratePlanClicked() {
   btnGeneratePlan->setEnabled(false);
   btnGenerateCode->setEnabled(false);
 
-  LlmClient::Provider selectedProvider =
-      static_cast<LlmClient::Provider>(llmProviderCombo->currentData().toInt());
-  llmClient->setProvider(selectedProvider);
+  LlmClient::Model selectedModel =
+      static_cast<LlmClient::Model>(llmModelCombo->currentData().toInt());
+  llmClient->setModel(selectedModel);
   llmClient->setApiKey(apiKey);
+
+  QString comments = llmCommentsTextEdit->toPlainText();
+  if (!comments.isEmpty()) {
+      spec += "\n\nUser Comments:\n" + comments;
+  }
 
   if (!selectedPdfPath.isEmpty()) {
     llmClient->generateTestPlanFromPdf(selectedPdfPath, spec);
@@ -265,10 +305,16 @@ void MainWindow::onGenerateCodeClicked() {
   btnGeneratePlan->setEnabled(false);
   btnGenerateCode->setEnabled(false);
 
-  LlmClient::Provider selectedProvider =
-      static_cast<LlmClient::Provider>(llmProviderCombo->currentData().toInt());
-  llmClient->setProvider(selectedProvider);
+  LlmClient::Model selectedModel =
+      static_cast<LlmClient::Model>(llmModelCombo->currentData().toInt());
+  llmClient->setModel(selectedModel);
   llmClient->setApiKey(apiKey);
+
+  QString comments = llmCommentsTextEdit->toPlainText();
+  if (!comments.isEmpty()) {
+      plan += "\n\nUser Comments:\n" + comments;
+  }
+
   llmClient->generateSystemVerilog(plan);
 
   mainTabWidget->setCurrentWidget(generatedCodeTextEdit);
@@ -380,12 +426,13 @@ void MainWindow::handleSimulationLoop(int exitCode) {
       return;
     }
 
-    LlmClient::Provider selectedProvider = static_cast<LlmClient::Provider>(
-        llmProviderCombo->currentData().toInt());
-    llmClient->setProvider(selectedProvider);
+    LlmClient::Model selectedModel = static_cast<LlmClient::Model>(
+        llmModelCombo->currentData().toInt());
+    llmClient->setModel(selectedModel);
     llmClient->setApiKey(apiKey);
 
-    llmClient->generateDesignReport(lastGeneratedCode, logText.right(4000));
+    QString comments = llmCommentsTextEdit->toPlainText();
+    llmClient->generateDesignReport(lastGeneratedCode, logText.right(4000), comments);
 
     mainTabWidget->setCurrentWidget(finalReportTextEdit);
     finalReportTextEdit->setPlainText("Thinking about design issues...");
@@ -406,12 +453,13 @@ void MainWindow::handleSimulationLoop(int exitCode) {
         return;
       }
 
-      LlmClient::Provider selectedProvider = static_cast<LlmClient::Provider>(
-          llmProviderCombo->currentData().toInt());
-      llmClient->setProvider(selectedProvider);
+      LlmClient::Model selectedModel = static_cast<LlmClient::Model>(
+          llmModelCombo->currentData().toInt());
+      llmClient->setModel(selectedModel);
       llmClient->setApiKey(apiKey);
 
-      llmClient->improveSystemVerilog(lastGeneratedCode, logText.right(4000));
+      QString comments = llmCommentsTextEdit->toPlainText();
+      llmClient->improveSystemVerilog(lastGeneratedCode, logText.right(4000), comments);
 
       mainTabWidget->setCurrentWidget(generatedCodeTextEdit);
       generatedCodeTextEdit->setPlainText("Thinking about testcase fixes...");
