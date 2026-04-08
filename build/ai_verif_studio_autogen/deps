@@ -463,6 +463,7 @@ ai_verif_studio_autogen/timestamp: \
 	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6/QtPublicToolHelpers.cmake \
 	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6/QtPublicWalkLibsHelpers.cmake \
 	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6/QtPublicWindowsHelpers.cmake \
+	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6/qt.toolchain.cmake \
 	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentAdditionalTargetInfo.cmake \
 	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfig.cmake \
 	C:/Qt/6.10.2/mingw_64/lib/cmake/Qt6Concurrent/Qt6ConcurrentConfigVersion.cmake \

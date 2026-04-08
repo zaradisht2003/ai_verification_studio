@@ -1,3 +1,22 @@
+--- CONFIGURATION OUTPUT ---
+-- The CXX compiler identification is GNU 13.1.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/Qt/Tools/mingw1310_64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Performing Test HAVE_STDATOMIC
+-- Performing Test HAVE_STDATOMIC - Success
+-- Found WrapAtomic: TRUE
+-- Could NOT find WrapVulkanHeaders (missing: Vulkan_INCLUDE_DIR) 
+-- Configuring done (6.4s)
+-- Generating done (0.3s)
+-- Build files have been written to: C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build
+
+--- BUILD OUTPUT ---
 [1/4] Automatic MOC and UIC for target ai_verif_studio
 [2/3] Building CXX object CMakeFiles/ai_verif_studio.dir/src/LlmClient.cpp.obj
 [3/3] Linking CXX executable ai_verif_studio.exe

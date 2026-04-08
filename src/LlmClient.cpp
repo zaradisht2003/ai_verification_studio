@@ -79,7 +79,7 @@ void LlmClient::generateTestPlanFromPdf(const QString &pdfFilePath,
   } else if (currentModel == Model::Gemini2_5_Flash_Lite) {
       modelName = "gemini-2.5-flash-lite";
   } else if (currentModel == Model::Gemini3_1_Flash_Lite) {
-      modelName = "gemini-3-1-flash-lite-preview";
+      modelName = "gemini-3.1-flash-lite-preview";
   }
 
   QString apiVersion = modelName.contains("gemini-3") ? "v1alpha" : "v1beta";
@@ -245,7 +245,7 @@ void LlmClient::sendRequest(const QString &prompt,
   } else if (currentModel == Model::Gemini2_5_Flash_Lite) {
       modelName = "gemini-2.5-flash-lite";
   } else if (currentModel == Model::Gemini3_1_Flash_Lite) {
-      modelName = "gemini-3-1-flash-lite-preview";
+      modelName = "gemini-3.1-flash-lite-preview";
   }
 
   QString apiVersion = modelName.contains("gemini-3") ? "v1alpha" : "v1beta";
