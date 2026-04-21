@@ -17,7 +17,7 @@ To build and run this project, you will need the following dependencies installe
 - **CMake**: Version 3.16 or higher.
 - **Python 3.x**: Specifically to run the `compile.py` wrapper.
 - **Qt 6**: Specifically the Core, Gui, Widgets, Network, and Concurrent modules.
-- **Icarus Verilog (`iverilog` / `vvp`)**: Required functionally in your system `PATH` to automatically run and test generated SystemVerilog logic paths.
+- **Remote Access to server (To run the simulation)**: you need to have an access to a remote server through `ssh key`  ,and you should have `Synopsis VCS` tools installed on it ,and you need to have a directory containing the source files for your design that need to be tested.
 - **API Keys**: Access keys to Gemini, Codestral, or OpenRouter for the text generation loop.
 
 ## Instructions to Run
@@ -32,6 +32,12 @@ To build and run this project, you will need the following dependencies installe
    ```bash
    .\build\ai_verif_studio.exe
    ```
+5. Open the `settings` tab ,and insert the ssh key ,API key,and project directory on remote server to run simulations.
+6. Insert the hardware device specifications either by text or through a PDF file .
+6. Generate test plan ,and edit if you want .
+7. Generate code ,and edit if you want .
+8. You can enable or disable the AI feedback loop .
+
    *(Ensure Qt DLLs are included using `windeployqt` which the CMakeLists file executes automatically).*
 
 ## Code Provenance
@@ -46,4 +52,4 @@ To build and run this project, you will need the following dependencies installe
 **Datasets & External Models Verification Policy:**
 - No static datasets or pre-trained models are downloaded or stored algorithmically. 
 - Input context strictly relies on user-provided `.txt` specifications or user-uploaded design parameter `.pdf` documents within the GUI.
-- AI Models (Gemini, Codestral, OpenRouter) are strictly accessed remotely over the network via standard API hooks. There are no locally downloaded LLM files or proprietary weights utilized explicitly due to their size footprint, eliminating the need for automated resource downloads by the software tool.
+- Gemini AI Models are strictly accessed remotely over the network via standard API hooks. There are no locally downloaded LLM files or proprietary weights utilized explicitly due to their size footprint, eliminating the need for automated resource downloads by the software tool.
