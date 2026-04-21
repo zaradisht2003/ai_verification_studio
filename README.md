@@ -40,6 +40,8 @@ To build and run this project, you will need the following dependencies installe
 
    *(Ensure Qt DLLs are included using `windeployqt` which the CMakeLists file executes automatically).*
 
+   *if the application froze during either of test plan generation or code generation ,then this means that you reached the reauests rate limit for the model you are using ,so you should close the application ,and reopen it ,and change the model from the settings to another model.*
+
 ## Code Provenance
 
 
