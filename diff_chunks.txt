@@ -1,0 +1,348 @@
+﻿
+@@ -1,7 +1,7 @@
+@@ -0,0 +1,53 @@
+@@ -0,0 +1,17 @@
+@@ -1,3 +1,3 @@
+@@ -1,4 +1,4 @@
+@@ -95,7 +95,7 @@ set(CMAK
+E_CXX_COMPILER_CLANG_RESOU
+RCE_DIR "")
+@@ -1,4 +1,4 @@
+@@ -3,7 +3,7 @@ set(CMAKE_
+HOST_SYSTEM_NAME 
+"Windows")
+@@ -17,7 +17,7 @@ events:
+@@ -39,33 +39,36 @@ 
+events:
+@@ -88,19 +91,15 @@ 
+events:
+@@ -109,13 +108,12 @@ 
+events:
+@@ -154,22 +152,19 @@ 
+events:
+@@ -192,8 +187,8 @@ 
+events:
+@@ -203,15 +198,843 @@ 
+events:
+@@ -227,13 +1050,13 @@ 
+events:
+@@ -259,7 +1082,7 @@ 
+events:
+@@ -269,11 +1092,9 @@ 
+events:
+@@ -363,30 +1184,27 @@ 
+events:
+@@ -404,30 +1222,27 @@ 
+events:
+@@ -1,16 +0,0 @@
+@@ -1,3 +0,0 @@
+@@ -1,316 +0,0 @@
+@@ -1,166 +0,0 @@
+@@ -1,5 +1,5 @@
+@@ -1,28 +0,0 @@
+@@ -1,954 +0,0 @@
+@@ -1,195 +0,0 @@
+@@ -1,26 +0,0 @@
+@@ -1,1044 +0,0 @@
+@@ -1,3121 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1,10 +0,0 @@
+@@ -1 +0,0 @@
+@@ -1,3 +0,0 @@
+@@ -1 +0,0 @@
+@@ -1 +0,0 @@
+@@ -1,8 +0,0 @@
+@@ -1,885 +0,0 @@
+@@ -1,970 +0,0 @@
+@@ -1,331 +0,0 @@
+@@ -1,950 +0,0 @@
+@@ -1,23 +0,0 @@
+@@ -1,93 +0,0 @@
+@@ -1,10 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1,22 +0,0 @@
+@@ -1,82 +0,0 @@
+@@ -1,5 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1,2 +0,0 @@
+@@ -1 +0,0 @@
+@@ -1,6 +1,6 @@
+@@ -9,8 +9,11 @@
+@@ -364,8 +367,8 @@
+@@ -388,8 +391,8 @@
+@@ -443,24 +446,24 @@
+@@ -1,2 +1,2 @@
+@@ -686,7 +686,7 @@ C:/Use
+rs/Dell/.gemini/antigravit
+y/scratch/ai_verification_
+studio/src/LlmClient.h
+@@ -721,7 +721,11 @@ C:/Us
+ers/Dell/.gemini/antigravi
+ty/scratch/ai_verification
+_studio/src/MainWindow.
+@@ -1004,17 +1008,25 @@ C:
+/Users/Dell/.gemini/antigr
+avity/scratch/ai_verificat
+ion_studio/src/MainWindow.
+@@ -1022,10 +1034,13 @@ C:
+/Users/Dell/.gemini/antigr
+avity/scratch/ai_verificat
+ion_studio/src/MainWindow.
+@@ -1035,6 +1050,8 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/src/MainWindow.
+@@ -1058,11 +1075,13 @@ C:
+/Users/Dell/.gemini/antigr
+avity/scratch/ai_verificat
+ion_studio/src/MainWindow.
+@@ -1070,6 +1089,7 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/src/MainWindow.
+@@ -1079,6 +1099,7 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/src/MainWindow.
+@@ -1439,7 +1460,7 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/src/MainWindow.
+@@ -1762,7 +1783,7 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/src/SimulationR
+@@ -0,0 +1,10 @@
+@@ -1 +0,0 @@
+@@ -0,0 +1,72 @@
+@@ -1,316 +0,0 @@
+@@ -1,5 +1,5 @@
+@@ -60,7 +60,11 @@ 
+template <> constexpr 
+inline auto MainWindow::qt
+_create_metaobjectdata<qt_
+meta_t
+@@ -98,6 +102,18 @@ 
+template <> constexpr 
+inline auto MainWindow::qt
+_create_metaobjectdata<qt_
+meta_t
+@@ -132,6 +148,9 @@ void M
+ainWindow::qt_static_metac
+all(QObject *_o, 
+QMetaObject::Call _c, int 
+_id,
+@@ -156,14 +175,14 @@ int 
+MainWindow::qt_metacall(QM
+etaObject::Call _c, int 
+_id, void **_a)
+@@ -1,5 +1,5 @@
+@@ -31,7 +31,11 @@ C:/User
+s/Dell/.gemini/antigravity
+/scratch/ai_verification_s
+tudio/build/ai_studio
+@@ -314,17 +318,25 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/build/ai_studio
+@@ -332,10 +344,13 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/build/ai_studio
+@@ -345,6 +360,8 @@ C:/Use
+rs/Dell/.gemini/antigravit
+y/scratch/ai_verification_
+studio/build/ai_studio
+@@ -368,11 +385,13 @@ C:/U
+sers/Dell/.gemini/antigrav
+ity/scratch/ai_verificatio
+n_studio/build/ai_studio
+@@ -380,6 +399,7 @@ C:/Use
+rs/Dell/.gemini/antigravit
+y/scratch/ai_verification_
+studio/build/ai_studio
+@@ -389,6 +409,7 @@ C:/Use
+rs/Dell/.gemini/antigravit
+y/scratch/ai_verification_
+studio/build/ai_studio
+@@ -46,6 +46,8 @@ 
+template <> constexpr 
+inline auto SimulationRunn
+er::qt_create_metaobjectda
+ta<qt_
+@@ -67,15 +69,23 @@ 
+template <> constexpr 
+inline auto SimulationRunn
+er::qt_create_metaobjectda
+ta<qt_
+@@ -103,10 +113,12 @@ 
+void SimulationRunner::qt_
+static_metacall(QObject 
+*_o, QMetaObject::Call 
+_c, int
+@@ -117,6 +129,10 @@ void 
+SimulationRunner::qt_stati
+c_metacall(QObject *_o, 
+QMetaObject::Call _c, int
+@@ -139,14 +155,14 @@ int 
+SimulationRunner::qt_metac
+all(QMetaObject::Call _c, 
+int _id, void **_a)
+@@ -168,4 +184,16 @@ void 
+SimulationRunner::processF
+inished(int _t1)
+@@ -1,5 +1,5 @@
+@@ -1,4 +1,4 @@
+@@ -30,7 +30,11 @@ ai_stud
+io_v2_autogen/timestamp: \
+@@ -313,17 +317,25 @@ ai_s
+tudio_v2_autogen/timestamp
+: \
+@@ -331,10 +343,13 @@ ai_s
+tudio_v2_autogen/timestamp
+: \
+@@ -344,6 +359,8 @@ ai_stu
+dio_v2_autogen/timestamp: 
+\
+@@ -367,11 +384,13 @@ ai_s
+tudio_v2_autogen/timestamp
+: \
+@@ -379,6 +398,7 @@ ai_stu
+dio_v2_autogen/timestamp: 
+\
+@@ -388,6 +408,7 @@ ai_stu
+dio_v2_autogen/timestamp: 
+\
+@@ -442,6 +463,7 @@ ai_stu
+dio_v2_autogen/timestamp: 
+\
+@@ -598,6 +620,7 @@ ai_stu
+dio_v2_autogen/timestamp: 
+\
+@@ -1029,7 +1052,7 @@ ai_s
+tudio_v2_autogen/timestamp
+: \
+@@ -1,20 +1,96 @@
+@@ -1,156 +1,31 @@
+@@ -0,0 +1,222 @@
+@@ -2,7 +2,7 @@
+@@ -1,8 +0,0 @@
+@@ -1,3 +0,0 @@
+@@ -0,0 +1,9 @@
+@@ -0,0 +1,8 @@
+@@ -1,8 +0,0 @@
+@@ -0,0 +1,45 @@
+@@ -0,0 +1,3 @@
+@@ -0,0 +1,68 @@
+@@ -32,6 +32,8 @@ 
+LlmClient::~LlmClient() {
+@@ -68,13 +70,24 @@ void L
+lmClient::generateTestPlan
+FromPdf(const QString 
+&pdfFilePath,
+@@ -89,15 +102,16 @@ void 
+LlmClient::generateTestPla
+nFromPdf(const QString 
+&pdfFilePath,
+@@ -109,49 +123,44 @@ 
+QByteArray LlmClient::buil
+dMultimodalPayload(const 
+QString 
+&systemInstruction,
+@@ -170,6 +179,53 @@ void 
+LlmClient::generateSystemV
+erilog(const QString 
+&testPlanJson) {
+@@ -180,13 +236,23 @@ 
+void LlmClient::sendReques
+t(const QString &prompt,
+@@ -198,8 +264,8 @@ void L
+lmClient::sendRequest(cons
+t QString &prompt,
+@@ -281,7 +347,28 @@ void 
+LlmClient::onPayloadReady(
+const QByteArray 
+&payload) {
+@@ -290,16 +377,7 @@ void 
+LlmClient::onPayloadReady(
+const QByteArray 
+&payload) {
+@@ -318,33 +396,44 @@ 
+void LlmClient::onPayloadR
+eady(const QByteArray 
+&payload) {
+@@ -353,7 +442,7 @@ 
+QByteArray LlmClient::buil
+dTextPayload(const 
+QString 
+&systemInstruction,
+@@ -376,7 +465,7 @@ void L
+lmClient::onReplyFinished(
+) {
+@@ -423,14 +512,17 @@ 
+void LlmClient::onReplyFin
+ished() {
+@@ -439,8 +531,8 @@ void L
+lmClient::onReplyFinished(
+) {
+@@ -449,29 +541,42 @@ 
+void LlmClient::onReplyFin
+ished() {
+@@ -13,10 +13,13 @@ class 
+LlmClient : public 
+QObject {
+@@ -26,6 +29,12 @@ public:
+@@ -40,13 +49,16 @@ 
+private slots:
+@@ -1,15 +1,20 @@
+@@ -35,15 +40,44 @@ MainWi
+ndow::MainWindow(QWidget 
+*parent)
+@@ -98,6 +132,13 @@ void M
+ainWindow::createCentralWi
+dget() {
+@@ -106,24 +147,49 @@ 
+void MainWindow::createCen
+tralWidget() {
+@@ -134,9 +200,15 @@ void 
+MainWindow::createCentralW
+idget() {
+@@ -189,8 +261,16 @@ void 
+MainWindow::onGeneratePlan
+Clicked() {
+@@ -225,7 +305,16 @@ void 
+MainWindow::onGenerateCode
+Clicked() {
+@@ -240,20 +329,147 @@ 
+void MainWindow::onRunSimu
+lationClicked() {
+@@ -270,6 +486,12 @@ void 
+MainWindow::onLlmResponseR
+eceived(const QString 
+&response,
+@@ -3,13 +3,17 @@
+@@ -18,6 +22,9 @@ public:
+@@ -30,6 +37,9 @@ private 
+slots:
+@@ -38,15 +48,20 @@ 
+private:
+@@ -54,10 +69,12 @@ 
+private:
+@@ -65,6 +82,11 @@ 
+private:
+@@ -1,7 +1,7 @@
+@@ -18,21 +18,49 @@ Simula
+tionRunner::~SimulationRun
+ner() {
+@@ -54,4 +82,9 @@ void Sim
+ulationRunner::onReadyRead
+StandardError() {
+@@ -12,7 +12,12 @@ public:
+@@ -21,6 +26,8 @@ signals:
+@@ -29,6 +36,7 @@ private 
+slots:
+
+
