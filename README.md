@@ -6,7 +6,7 @@ AI Verification Studio is a C++ Qt desktop application that integrates LLM APIs 
 
 - **`src/main.cpp`**: Entry point of the application.
 - **`src/MainWindow.cpp` / `MainWindow.h`**: The primary Qt graphical UI, orchestrating user configurations, text/PDF specification parsing, test plan generation, code generation, and the automated AI debugging loops. 
-- **`src/LlmClient.cpp` / `LlmClient.h`**: Manages asynchronous communication with remote LLM APIs (Google Gemini, OpenRouter, Codestral). Formats JSON payloads, processes streamed generation, handles timeout timers, and returns completed textual test plans, code snippets, or markdown reports.
+- **`src/LlmClient.cpp` / `LlmClient.h`**: Manages asynchronous communication with remote LLM APIs (Google Gemini). Formats JSON payloads, processes streamed generation, handles timeout timers, and returns completed textual test plans, code snippets, or markdown reports.
 - **`src/SimulationRunner.cpp` / `SimulationRunner.h`**: Exclusively handles the SystemVerilog compilation (`iverilog`) and simulation execution (`vvp`), returning captured standard output and errors via signals to dictate the AI refactoring loop.
 - **`compile.py`**: A cross-platform automated build wrapper that dynamically passes system environment variables to `qt-cmake.bat` and standard `cmake` builders to ensure successful builds.
 
@@ -18,7 +18,7 @@ To build and run this project, you will need the following dependencies installe
 - **Python 3.x**: Specifically to run the `compile.py` wrapper.
 - **Qt 6**: Specifically the Core, Gui, Widgets, Network, and Concurrent modules.
 - **Remote Access to server (To run the simulation)**: you need to have an access to a remote server through `ssh key`  ,and you should have `Synopsis VCS` tools installed on it ,and you need to have a directory containing the source files for your design that need to be tested.
-- **API Keys**: Access keys to Gemini, Codestral, or OpenRouter for the text generation loop.
+- **API Keys**: Access keys to Gemini for the text/code generation loop.
 
 ## Instructions to Run
 
