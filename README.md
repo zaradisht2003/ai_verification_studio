@@ -1,6 +1,6 @@
 # AI Verification Studio
 
-AI Verification Studio is a C++ Qt desktop application that integrates LLM APIs for automatically generating, simulating, and evaluating SystemVerilog code from hardware specifications.
+AI Verification Studio is a C++ Qt desktop application that integrates LLM APIs for automatically generating, simulating, and evaluating SystemVerilog testbench code from hardware specifications.
 
 ## Code Structure
 
