@@ -173,6 +173,9 @@ void LlmClient::generateSystemVerilog(const QString &testPlanJson) {
       "testbench. "
       "Include a clock generator, reset logic, basic scoreboard, and "
       "assertions. "
+      "IMPORTANT RULES: \n"
+      "1. Do NOT declare the design module inside the testbench code. The module is already declared in a separate design file. Use only the inputs and outputs provided in the test plan to instantiate the DUT.\n"
+      "2. Do NOT redefine classes, interfaces, or modules multiple times in your code. Ensure everything is declared exactly once.\n"
       "Output ONLY the raw SystemVerilog code without markdown formatting (no "
       "```sv ... ```).";
 
@@ -188,6 +191,9 @@ void LlmClient::improveSystemVerilog(const QString &currentCode,
       "output log. "
       "Your task is to analyze the simulation errors, identify failed test cases, and "
       "modify the testbench to fix them and ensure all test cases pass. "
+      "IMPORTANT RULES: \n"
+      "1. Do NOT declare the design module inside the testbench code. The module is already declared in a separate design file. Use only the inputs and outputs provided to instantiate the DUT.\n"
+      "2. Do NOT redefine classes, interfaces, or modules multiple times in your code. Ensure everything is declared exactly once.\n"
       "Provide the complete, updated SystemVerilog code. "
       "Output ONLY the raw SystemVerilog code without markdown formatting (no "
       "```sv ... ```).";

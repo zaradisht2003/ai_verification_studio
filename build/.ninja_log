@@ -1,11 +1,17 @@
 # ninja log v6
-12	3118	7985063046748213	ai_verif_studio_autogen/timestamp	8a9249eab7f65ed8
-12	3118	7985063046748213	ai_verif_studio_autogen/mocs_compilation.cpp	8a9249eab7f65ed8
-12	3118	7985063046748213	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/timestamp	8a9249eab7f65ed8
-12	3118	7985063046748213	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/mocs_compilation.cpp	8a9249eab7f65ed8
-3382	4877	7985063050746270	CMakeFiles/ai_verif_studio.dir/src/SimulationRunner.cpp.obj	b62e0e330d2298fd
-3182	6764	7985063048815869	CMakeFiles/ai_verif_studio.dir/src/LlmClient.cpp.obj	597e05b2457a54e7
-3128	6950	7985063048261473	CMakeFiles/ai_verif_studio.dir/ai_verif_studio_autogen/mocs_compilation.cpp.obj	88b1d5e06b758930
-3277	7038	7985063049757417	CMakeFiles/ai_verif_studio.dir/src/MainWindow.cpp.obj	c5553291bb3ab352
-3439	7142	7985063051360883	CMakeFiles/ai_verif_studio.dir/src/main.cpp.obj	62568c7cba246a4f
-7142	9538	7985063088412251	ai_verif_studio.exe	f57e1a4295e06079
+1688	5392	8002816707640474	CMakeFiles/ai_verif_studio.dir/src/main.cpp.obj	62568c7cba246a4f
+1376	5284	8002816704516273	CMakeFiles/ai_verif_studio.dir/ai_verif_studio_autogen/mocs_compilation.cpp.obj	88b1d5e06b758930
+1642	3039	8002816707191166	CMakeFiles/ai_verif_studio.dir/src/SimulationRunner.cpp.obj	b62e0e330d2298fd
+9	1344	8002816702676186	ai_verif_studio_autogen/mocs_compilation.cpp	8a9249eab7f65ed8
+9	1344	8002816702676186	ai_verif_studio_autogen/timestamp	8a9249eab7f65ed8
+9	1344	8002816702676186	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/timestamp	8a9249eab7f65ed8
+9	1344	8002816702676186	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/mocs_compilation.cpp	8a9249eab7f65ed8
+1518	5204	8002816705943085	CMakeFiles/ai_verif_studio.dir/src/LlmClient.cpp.obj	597e05b2457a54e7
+1567	5482	8002816706433370	CMakeFiles/ai_verif_studio.dir/src/MainWindow.cpp.obj	c5553291bb3ab352
+5482	7980	8002816745575556	ai_verif_studio.exe	f57e1a4295e06079
+24	430	8002824942355100	ai_verif_studio_autogen/timestamp	8a9249eab7f65ed8
+24	430	8002824942355100	ai_verif_studio_autogen/mocs_compilation.cpp	8a9249eab7f65ed8
+24	430	8002824942355100	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/timestamp	8a9249eab7f65ed8
+24	430	8002824942355100	C:/Users/Dell/.gemini/antigravity/scratch/ai_verification_studio/build/ai_verif_studio_autogen/mocs_compilation.cpp	8a9249eab7f65ed8
+431	3808	8002824946419314	CMakeFiles/ai_verif_studio.dir/src/MainWindow.cpp.obj	c5553291bb3ab352
+3808	5403	8002824980188211	ai_verif_studio.exe	f57e1a4295e06079

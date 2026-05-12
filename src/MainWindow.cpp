@@ -386,7 +386,7 @@ void MainWindow::onScpFinished(int exitCode) {
 
   // Command runs inside the user's remote directory. Does not require admin.
   QString command =
-      QString("cd %1 && vcs -full64 -sverilog -debug_access+all tb.sv *.sv && ./simv")
+      QString("cd %1 && vcs -full64 -sverilog -debug_access+all  *.sv && ./simv")
           .arg(remoteDir);
   simulationRunner->runSshCommand(sshTarget, sshKey, command);
 }
